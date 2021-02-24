@@ -1,0 +1,77 @@
+<div class="h-full w-full overflow-hidden" fxLayout="column">
+
+  <div class="py-4 px-gutter" fxFlex="none" fxLayout="row" fxLayoutAlign="start center" vexContainer>
+    <h1 class="title m-0">{{currentJob.client.clientId.companyName}}</h1>
+      <span class="ml-8 cursor-pointer hover:underline" (click)="editJob(currentJob.client)">Edit Job
+      </span>
+    <span fxFlex></span>
+  </div>
+  <div *ngFor="let board of currentScrum">
+    <div (cdkDropListDropped)="dropList($event)"
+         @stagger
+         [cdkDropListData]="board.children"
+         cdkDropList
+         cdkDropListOrientation="horizontal"
+         class="px-gutter pb-gutter min-h-0 overflow-x-auto"
+         fxFlex="auto"
+         fxLayout="row"
+         fxLayoutAlign="start start"
+         fxLayoutGap="24px"
+         vexContainer>
+      <div *ngFor="let list of board.children; trackBy: trackById"
+           @fadeInUp
+           [cdkDragData]="list"
+           cdkDrag
+           cdkDropListGroup
+           class="rounded bg-app-bar overflow-hidden max-h-full w-full max-w-xxs"
+           fxFlex="none"
+           fxLayout="column">
+        <div cdkDragHandle class="p-4 cursor-pointer" fxFlex="none">
+          <h2 class="subheading-2 font-medium m-0 select-none" fxFlex="none">{{ list.label }}</h2>
+        </div>
+
+        <vex-scrollbar class="flex-auto">
+          <div (cdkDropListDropped)="drop($event)"
+               [cdkDropListConnectedTo]="getConnectedList(board)"
+               [cdkDropListData]="list.children"
+               cdkDropList
+               class="px-4 pb-4"
+               id="{{ list.id }}">
+            <div (click)="open(card)"
+                 *ngFor="let card of list.children; trackBy: trackById"
+                 [cdkDragData]="card"
+                 cdkDrag
+                 class="scrumboard-card card w-full cursor-pointer overflow-hidden">
+
+              <div class="p-4">
+                <div *ngIf="card.labels?.length > 0" class="mb-2" fxLayout="row" fxLayoutGap="8px">
+                  <div *ngFor="let label of card.labels"
+                       [ngClass]="label.bgClass"
+                       class="label"
+                       fxFlex></div>
+                </div>
+
+                 <!--TODO need to get assigned worker/{{card.shift.total}} -->
+                 <h3 class="body-2 m-0 select-none" >{{card.title}} ({{card.fulfilled}}/{{card.shift.total}} Assigned)</h3>
+
+                <div *ngIf="card.workerId?.length > 0"
+                     class="mt-2"
+                     fxLayout="row"
+                     fxLayoutGap="8px">
+                  <div *ngIf="card.timesheetId?.length > 0" fxFlex fxLayout="row" fxLayoutAlign="end center">
+                    <img *ngFor="let user of card.timesheetId"
+                         [matTooltip]="user.workerId"
+                         [src]="user.profilePhoto"
+                         class="avatar overlapping">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </vex-scrollbar>
+      </div>
+
+    </div>
+  </div>
+
+</div>

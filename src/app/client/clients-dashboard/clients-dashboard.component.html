@@ -1,0 +1,37 @@
+<vex-secondary-toolbar current="Dashboard">
+
+</vex-secondary-toolbar>
+
+<div class="p-gutter"
+  gdColumns="1fr 1fr 1fr "
+  gdColumns.lt-md="1fr 1fr"
+  gdColumns.lt-sm="1fr"
+  gdGap="16px"
+  vexContainer>
+  <vex-widget-quick-value-center [change]="124.4"
+    [icon]="icGroup"
+    iconClass="text-primary bg-primary-light"
+    gdColumn.lt-sm="1"
+    label="Total Jobs"
+    [value]="totalJobs">
+  </vex-widget-quick-value-center>
+
+  <vex-widget-quick-value-center [change]="23.2"
+    [icon]="icReceipt"
+    iconClass="text-primary bg-primary-light"
+    gdColumn.lt-sm="1"
+    label="Timesheets Pending"
+    [value]="reviewTimesheets">
+  </vex-widget-quick-value-center>
+  <vex-widget-quick-value-center [change]="23.2"
+    [icon]="icTimer"
+    iconClass="text-teal bg-teal-light"
+    gdColumn.lt-sm="1"
+    label="Total Hours Requested"
+    [value]="requestTime">
+  </vex-widget-quick-value-center>
+  <div gdColumn="1 / -1"  gdColumn.lt-sm="1" style="padding-top: 15px;">
+    <vex-client-job-table></vex-client-job-table>
+  </div>
+
+</div>

@@ -1,0 +1,85 @@
+<div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+  <h2 class="headline m-0" fxFlex="auto">Edit Timesheet: #{{jobData.timesheetId}}</h2>
+</div>
+
+<mat-divider class="-mx-3 text-border"></mat-divider>
+
+<table mat-table [dataSource]="workers" class="">
+
+  <ng-container matColumnDef="workerId.workerId">
+    <th mat-header-cell *matHeaderCellDef>Worker ID</th>
+    <td mat-cell *matCellDef="let element">{{element.workerId.workerId}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="workerId.forename">
+    <th mat-header-cell *matHeaderCellDef>Worker Name</th>
+    <td mat-cell *matCellDef="let element">{{element.workerId.forename}} {{element.workerId.surename}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="role">
+    <th mat-header-cell *matHeaderCellDef>Role</th>
+    <td mat-cell *matCellDef="let element"> {{element.role}} </td>
+  </ng-container>
+
+
+    <ng-container matColumnDef="startTime">
+    <th mat-header-cell *matHeaderCellDef>Start Time</th>
+    <td mat-cell *matCellDef="let element" [attr.contenteditable]="element.status === 'amend' && element.show === true" [ngClass]="{'disable': element.status === 'confirm'}" [ngClass]="(element.status === 'confirm')? 'disable': (element.status !== 'confirm' && element.show === false) ? 'disable' : ''" (blur)="editStartEnd( 'startTime', $event, element)">
+      {{element.startTime}}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="break">
+    <th mat-header-cell *matHeaderCellDef>Break</th>
+    <td mat-cell *matCellDef="let element"  class="b-with-60">
+      <mat-select [disabled]="element.status === 'confirm' || element.show !== true" (selectionChange)="break($event,element)" [value]="element.break" [placeholder]="element.break_label_text">
+        <mat-option *ngFor="let break of break_times" [value]="break.value">
+          {{break.viewValue}}
+        </mat-option>
+      </mat-select>
+
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="endTime">
+    <th mat-header-cell *matHeaderCellDef>End Time</th>
+    <td mat-cell *matCellDef="let element" [attr.contenteditable]="element.status === 'amend' && element.show === true" [ngClass]="{'disable': element.status === 'confirm'}" [ngClass]="(element.status === 'confirm')? 'disable': (element.status !== 'confirm' && element.show === false) ? 'disable' : ''" (blur)="editStartEnd( 'endTime', $event, element)">
+      {{element.endTime}}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="hours">
+    <th mat-header-cell *matHeaderCellDef>Hours</th>
+    <td mat-cell *matCellDef="let element">{{element.hours}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="show">
+    <th mat-header-cell *matHeaderCellDef>No Show</th>
+    <td mat-cell *matCellDef="let element">
+      <mat-checkbox [checked]="!element.show" (change)="noShow($event,element)" class="example-margin" color="primary" [disabled]="element.status === 'confirm'"></mat-checkbox>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef class="delete_invoice_cell">Actions</th>
+    <td mat-cell *matCellDef="let element" class="receipt_cell">
+      <div *ngIf="element.status === 'confirm'">
+        <button mat-raised-button color="primary" (click)="amend(element)">Amend</button>
+      </div>
+
+      <div *ngIf="element.status !== 'confirm'">
+        <button mat-raised-button  (click)="confirm(element)">Confirm</button>
+      </div>
+
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="mat-row  {{row.status_label}}" ></tr>
+</table>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()" type="button">CANCEL</button>
+  <button color="primary" (click)="setSubmit()" mat-button type="button">SUBMIT TIMESHEET</button>
+  <button color="primary" (click)="saveDraft()" mat-button type="button">SAVE DRAFT</button>
+</mat-dialog-actions>

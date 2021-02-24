@@ -1,0 +1,129 @@
+<form (ngSubmit)="save()" [formGroup]="form">
+  <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+    <!-- <img *ngIf="form.get('imageSrc').value" [src]="form.get('imageSrc').value" class="avatar mr-5"> -->
+
+    <h2 *ngIf="form.get('client').value"
+        class="headline m-0"
+        fxFlex="auto">{{ form.get('client').value}}</h2>
+    <h2 *ngIf="!form.get('client').value"
+        class="headline m-0"
+        fxFlex="auto">New Job</h2>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+      <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+  </div>
+
+  <mat-divider class="-mx-6 text-border"></mat-divider>
+  <mat-dialog-content fxLayout="column">
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>Client</mat-label>
+        <mat-select formControlName="client" [(ngModel)]="selectedClient" >
+          <mat-option *ngFor="let subclient of AllClients" [value]="subclient.firstName + ' ' + subclient.lastName">{{subclient.firstName + ' ' + subclient.lastName}}</mat-option>
+       </mat-select>
+        <mat-icon [icIcon]="icPerson" class="mr-3" matPrefix></mat-icon>
+
+      </mat-form-field>
+    </div>
+    <h4>Shift Information</h4>
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="flex-auto">
+        <mat-label>Shift Date</mat-label>
+        <input type="date" formControlName="shiftDate" matInput [min]="minDate" >
+        <mat-icon [icIcon]="icMyLocation" class="mr-3" matPrefix></mat-icon>
+      </mat-form-field>
+      <mat-form-field class="sm:ml-6 flex-auto">
+        <mat-label>Location of Shift</mat-label>
+        <input formControlName="locationShift" matInput>
+        <mat-icon [icIcon]="icLocationCity" class="mr-3" matPrefix></mat-icon>
+      </mat-form-field>
+    </div>
+    <h4>Shift Details</h4>
+    <div formArrayName="shifts">
+      <div *ngFor="let shift of form.get('shifts')['controls']; let i=index" class="list-group list-group-flush">
+        <div [formGroupName]="i">
+          <mat-form-field class="lg:w-3/12">
+            <mat-label>Department</mat-label>
+            <mat-select formControlName="department" >
+              <mat-option value="Housekeeping">Housekeeping</mat-option>
+              <mat-option value="Food and Beverage">Food and Beverage</mat-option>
+              <mat-option value="Back of House">Back of House</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="sm:ml-3 lg:w-3/12">
+            <mat-label>Role</mat-label>
+            <mat-select formControlName="role">
+              <mat-option *ngIf="shift.value.department == 'Housekeeping'" value="Linen Porter">Linen Porter</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Housekeeping'" value="Floor Porter">Floor Porter</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Housekeeping'" value="Floor Supervisor">Floor Supervisor</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Housekeeping'" value="Room Supervisor">Room Supervisor</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Housekeeping'" value="Evening Room Attendant">Evening Room Attendant</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Housekeeping'" value="Public Area Attendant">Public Area Attendant</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Housekeeping'" value="Spa Attendant">Spa Attendant</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Housekeeping'" value="Valet">Valet</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Housekeeping'" value="Housekeeper">Housekeeper</mat-option>
+
+              <mat-option *ngIf="shift.value.department == 'Food and Beverage'" value="Waiters">Waiters</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Food and Beverage'" value="Night Waiters">Night Waiters</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Food and Beverage'" value="Night Room Service">Night Room Service</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Food and Beverage'" value="Supervisor Banqueting">Supervisor Banqueting</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Food and Beverage'" value="Team Leader">Team Leader</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Food and Beverage'" value="Silver Service Waiters">Silver Service Waiters</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Food and Beverage'" value="Bar Staff">Bar Staff</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Food and Beverage'" value="Cloakroom">Cloakroom</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Food and Beverage'" value="Concierge">Concierge</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Food and Beverage'" value="Hostess">Hostess</mat-option>
+
+              <mat-option *ngIf="shift.value.department == 'Back of House'" value="Kitchen Porter">Kitchen Porter</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Back of House'" value="Night Kitchen Porter">Night Kitchen Porter</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Back of House'" value="Night Cleaners">Night Cleaners</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Back of House'" value="Supervisor BOH (Back of House)">Supervisor BOH (Back of House)</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Back of House'" value="Food Runners">Food Runners</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Back of House'" value="Breakfast Runners">Breakfast Runners</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Back of House'" value="Commis Chef">Commis Chef</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Back of House'" value="Breakfast Chef">Breakfast Chef</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Back of House'" value="Chef De Partie">Chef De Partie</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Back of House'" value="Pastry Chef">Pastry Chef</mat-option>
+              <mat-option *ngIf="shift.value.department == 'Back of House'" value="Banqueting Porter">Banqueting Porter</mat-option>
+          </mat-select>
+          </mat-form-field>
+          <mat-form-field class="sm:ml-3 lg:w-2/12">
+            <mat-label>Start Time</mat-label>
+            <input [ngxTimepicker]="fullTime" [format]="24" formControlName="startTime" matInput >
+            <ngx-material-timepicker #fullTime></ngx-material-timepicker>
+          </mat-form-field>
+          <mat-form-field class="sm:ml-3 lg:w-2/12">
+            <mat-label>End Time</mat-label>
+            <input [ngxTimepicker]="min" [format]="24" formControlName="endTime" matInput [min]="shift.value.startTime">
+            <ngx-material-timepicker #min></ngx-material-timepicker>
+          </mat-form-field>
+          <mat-form-field class="sm:ml-3 lg:w-1/12">
+            <mat-label>Staff</mat-label>
+            <input type="number" formControlName="total" matInput min="1">
+          </mat-form-field>
+          <mat-icon *ngIf="i == 0" class="sm:ml-3 text-green-500 mt-3" [icIcon]="icAdd" (click)="addShift()" ></mat-icon>
+          <mat-icon *ngIf="i !== 0" class="sm:ml-3 text-red-500 mt-3" [icIcon]="icMinus" (click)="removeShift(i)" ></mat-icon>
+        </div>
+      </div>
+    </div>
+
+    <h4>Additional Information</h4>
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="flex-auto">
+        <mat-label>Purchase Order No(Optional)</mat-label>
+        <input formControlName="purchaseOrderNo" matInput/>
+      </mat-form-field>
+      <mat-form-field class="sm:ml-6 flex-auto">
+        <mat-label>Shift Comments</mat-label>
+        <input formControlName="additionalInformation" matInput>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">CANCEL</button>
+    <!-- <button *ngIf="isUpdateMode()" color="primary" mat-button (click)="openJobs()" type="button">OPEN JOB</button> -->
+    <button *ngIf="isCreateMode()" color="primary" mat-button type="submit" [disabled]="!form.valid">CREATE JOB</button>
+    <button *ngIf="isUpdateMode()" color="primary" mat-button type="submit" [disabled]="!form.valid">UPDATE JOB</button>
+  </mat-dialog-actions>
+</form>

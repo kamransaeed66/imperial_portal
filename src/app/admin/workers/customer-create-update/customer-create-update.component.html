@@ -1,0 +1,579 @@
+<form (ngSubmit)="save()" [formGroup]="workerForm">
+  <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+    <!-- <img *ngIf="workerForm.get('profilePhoto').value" [src]="workerForm.get('profilePhoto').value" class="avatar mr-5">
+
+    <h2 *ngIf="workerForm.get('forename').value || workerForm.get('surename').value"
+        class="headline m-0"
+        fxFlex="auto">{{ workerForm.get('forename').value + ' ' + workerForm.get('surename').value }}</h2>
+    <h2 *ngIf="!workerForm.get('forename').value && !workerForm.get('surename').value"
+        class="headline m-0"
+        fxFlex="auto">New Worker</h2> -->
+
+    <!-- <button [matMenuTriggerFor]="settingsMenu" class="text-secondary" mat-icon-button type="button">
+      <mat-icon [icIcon]="icMoreVert"></mat-icon>
+    </button> -->
+
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+      <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+  </div>
+
+  <mat-divider class="-mx-6 text-border"></mat-divider>
+
+  <mat-dialog-content fxLayout="column">
+    <!-- <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>First Name</mat-label>
+        <input cdkFocusInitial formControlName="forename" matInput>
+        <mat-icon [icIcon]="icPerson" class="mr-3" matPrefix></mat-icon>
+      </mat-form-field>
+
+      <mat-form-field class="sm:mt-6 sm:ml-6 flex-auto">
+        <mat-label>Last Name</mat-label>
+        <input cdkFocusInitial formControlName="surename" matInput>
+        <mat-icon [icIcon]="icPerson" class="mr-3" matPrefix></mat-icon>
+      </mat-form-field>
+    </div> -->
+
+    <!-- <mat-form-field class="flex-auto">
+      <mat-label>Email Address</mat-label>
+      <input type="email" formControlName="emailAddress" matInput>
+    </mat-form-field>
+
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="flex-auto">
+        <mat-label>Phone Number</mat-label>
+        <input formControlName="mobileNumber" matInput>
+      </mat-form-field>
+    </div> -->
+
+  <div *ngIf="step == 0" class="flex flex-col sm:flex-row">
+      <mat-form-field *ngIf="step == 0" class="mt-6 flex-auto">
+        <mat-label>Department</mat-label>
+        <mat-select formControlName="department" (selectionChange)="changeDepartment($event)" [(ngModel)]="selectedDepartment">
+            <mat-option value="Housekeeping">Housekeeping</mat-option>
+            <mat-option value="Food and Beverage">Food and Beverage</mat-option>
+            <mat-option value="Back of House">Back of House</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field *ngIf="step == 0" class="sm:mt-6 sm:ml-6  flex-auto">
+          <mat-label>Title</mat-label>
+          <input formControlName="title" matInput >
+      </mat-form-field>
+  </div>
+  <div *ngIf="step == 0" class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+          <mat-label>First Name</mat-label>
+          <input formControlName="forename" matInput >
+      </mat-form-field>
+      <mat-form-field class="sm:mt-6 sm:ml-6   flex-auto">
+          <mat-label>Last Name</mat-label>
+          <input formControlName="surename" matInput >
+      </mat-form-field>
+  </div>
+  <div *ngIf="step == 0" class="flex flex-col flex-row">
+      <mat-radio-group formControlName="gender" class="mat-form-field-wrapper" fxLayout="row" fxLayoutGap="16px">
+          <mat-radio-button [checked]="true" value="Male" color="primary">Male</mat-radio-button>
+          <mat-radio-button value="Female" color="accent">Female</mat-radio-button>
+      </mat-radio-group>
+  </div>
+  <div *ngIf="step == 0" class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+          <mat-label>Address Line 1</mat-label>
+          <input formControlName="addressLine1" matInput >
+      </mat-form-field>
+      <mat-form-field class="sm:mt-6 sm:ml-6  flex-auto">
+          <mat-label>Address Line 2</mat-label>
+          <input formControlName="addressLine2" matInput >
+      </mat-form-field>
+  </div>
+  <div *ngIf="step == 0" class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+          <mat-label>City</mat-label>
+          <input formControlName="city" matInput >
+      </mat-form-field>
+      <mat-form-field class="sm:mt-6 sm:ml-6  flex-auto">
+          <mat-label>Postcode</mat-label>
+          <input formControlName="postcode" matInput >
+      </mat-form-field>
+  </div>
+  <div *ngIf="step == 0" class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+          <mat-label>Mobile Number</mat-label>
+          <input formControlName="mobileNumber" pattern="[0-9]*" minlength="10" maxlength="14" onkeypress="return event.charCode >= 48 && event.charCode <= 57"  matInput >
+      </mat-form-field>
+      <mat-form-field class="sm:mt-6 sm:ml-6  flex-auto">
+          <mat-label>Home Number</mat-label>
+          <input formControlName="homeNumber"  pattern="[0-9]*" minlength="10"maxlength="14"onkeypress="return event.charCode >= 48 && event.charCode <= 57" matInput >
+      </mat-form-field>
+  </div>
+  <mat-form-field *ngIf="step == 0" class="flex-auto">
+      <mat-label>Select your date of birth</mat-label>
+      <input formControlName="dateBirth" value="{{ birthDateVal | date:'yyyy-MM-dd' }}" (click)="formDatepickerRef.open()" (focus)="formDatepickerRef.open()" [matDatepicker]="formDatepickerRef" matInput>
+      <mat-datepicker-toggle [for]="formDatepickerRef" matSuffix></mat-datepicker-toggle>
+      <mat-hint>Click on the input or the datepicker icon</mat-hint>
+      <mat-datepicker #formDatepickerRef></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="step == 1" class="flex-auto">
+      <mat-label>National Insurance Number (Optional)</mat-label>
+      <input formControlName="nationalInsuranceNumber" matInput>
+  </mat-form-field>
+  <div fxLayout="column" fxLayoutGap="8px" *ngIf="step == 1">
+    <mat-form-field>
+        <mat-label>Driving License Number (Optional)</mat-label>
+        <input formControlName="currentDrivingLicense" matInput>
+    </mat-form-field>
+    <!-- <mat-checkbox formControlName="currentDrivingLicense" class="mat-form-field-wrapper" color="primary" (change)="checkCurrentDriving($event)" [checked]="currentDrivingVal">Driving License Number</mat-checkbox> -->
+    </div>
+  <mat-form-field class="flex-auto" *ngIf="step == 1">
+      <mat-label>Expiry Date (ex: MM/YYYY)</mat-label>
+      <input formControlName="currentDrivingLicenseExpiryDate" matInput>
+  </mat-form-field>
+  <mat-form-field  class="flex-auto" *ngIf=" step == 1">
+      <mat-label>Details of Endorsements</mat-label>
+      <input formControlName="detailsEndorsements" matInput>
+  </mat-form-field>
+  <div fxLayout="column" fxLayoutGap="8px" *ngIf=" step == 1">
+      <mat-checkbox formControlName="restrictionEmployment" class="mat-form-field-wrapper" color="primary" (change)="checkrestrictionEmployment($event)" [checked]="restrictionEmploymentVal">Are there any restrictions on you taking up employment in the UK?</mat-checkbox>
+      <mat-form-field *ngIf="restrictionEmploymentVal">
+          <mat-label>Please explain any restrictions.</mat-label>
+          <input formControlName="restrictionEmploymentDetail" matInput>
+      </mat-form-field>
+  </div>
+  <div *ngIf="step == 1" class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+          <mat-label>Bank Name</mat-label>
+          <input formControlName="bankName" matInput >
+      </mat-form-field>
+      <mat-form-field class="mt-6 flex-auto">
+          <mat-label>Bank Branch</mat-label>
+          <input formControlName="bankBranch" matInput >
+      </mat-form-field>
+  </div>
+  <mat-form-field *ngIf="step == 1" class="flex-auto">
+      <mat-label>Account Name Holder</mat-label>
+      <input  formControlName="accountNameHolder" matInput >
+  </mat-form-field>
+  <div *ngIf="step == 1" class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-4 flex-auto">
+          <mat-label>Bank Account Number</mat-label>
+          <input type="number" formControlName="bankAccountNumber" matInput >
+      </mat-form-field>
+      <mat-form-field class="mt-4 flex-auto">
+          <mat-label>Bank Branch Sort Code</mat-label>
+          <input formControlName="bankBranchSortCode" matInput pattern="[0-9]*"onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+      </mat-form-field>
+      <mat-form-field class="mt-4 flex-auto">
+          <mat-label>Building Society Reference (Optional) </mat-label>
+          <input formControlName="buildingSocietyReference" matInput pattern="[0-9]*"onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+      </mat-form-field>
+  </div>
+  <mat-form-field *ngIf="step == 2" class="flex-auto">
+      <mat-label>Emergency Contact Name / Next of Kin</mat-label>
+      <input formControlName="emergencyRelationship" matInput >
+  </mat-form-field>
+  <mat-form-field *ngIf="step == 2" class="flex-auto">
+    <mat-label>Relationship</mat-label>
+    <input formControlName="relationship" matInput >
+</mat-form-field>
+  <mat-form-field *ngIf="step == 2" class="flex-auto">
+      <mat-label>Next of Kin Address</mat-label>
+      <input formControlName="nextKinAddress" matInput >
+  </mat-form-field>
+  <div *ngIf="step == 2" class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+          <mat-label>Next of Kin Phone Number (mobile)
+          </mat-label>
+          <input formControlName="nextKinPhoneNumberMobile" matInput >
+      </mat-form-field>
+      <mat-form-field class="mt-6 flex-auto">
+          <mat-label>Next of Kin Phone Number (home) (Optional)</mat-label>
+          <input formControlName="nextKinPhoneNumberHome" matInput>
+      </mat-form-field>
+  </div>
+  <div *ngIf="step == 2" fxLayout="column" fxLayoutGap="16px">
+      <mat-radio-group formControlName="employeeStatement" class="mat-form-field-wrapper" fxLayout="column" fxLayoutGap="16px">
+          <mat-radio-button [checked]="true" value="This is my first job since 6 April and I’ve not been receiving taxable
+          Jobseeker’s Allowance, Employment and Support Allowance, taxable
+          Incapacity Benefit, State or Occupational Pension." color="primary"><span style="white-space: normal;">This is my first job since 6 April and I’ve not been receiving taxable Jobseeker’s Allowance, Employment and Support Allowance, taxable Incapacity Benefit, State or Occupational Pension.</span></mat-radio-button>
+          <mat-radio-button value="This is now my only job but since 6 April I’ve had another job, or
+          received taxable Jobseeker’s Allowance, Employment and Support
+          Allowance or taxable Incapacity Benefit. I do not receive a State or
+          Occupational Pension." color="primary"><span style="white-space: normal;">This is now my only job but since 6 April I’ve had another job, or received taxable Jobseeker’s Allowance, Employment and Support Allowance or taxable Incapacity Benefit. I do not receive a State or Occupational Pension.</span></mat-radio-button>
+          <mat-radio-button value="As well as my new job, I have another job or receive State or
+          Occupational Pension.
+          " color="primary">As well as my new job, I have another job or receive State or Occupational Pension.
+          </mat-radio-button>
+      </mat-radio-group>
+  </div>
+  <div fxLayout="column" fxLayoutGap="8px" *ngIf=" step == 3">
+      <label>Student Loan</label>
+      <mat-checkbox color="primary" (change)="checkStudentLoan($event, 1)" [checked]="studentloan1">Do you have one of the Student Loan Plans described which is not fully repaid?</mat-checkbox>
+      <mat-checkbox *ngIf="studentloan1" color="primary" (change)="checkStudentLoan($event, 2)" [checked]="studentloan2">Did you complete or leave your studies before 6th April?</mat-checkbox>
+      <mat-checkbox *ngIf="studentloan1 && studentloan2" color="primary" (change)="checkStudentLoan($event, 3)" [checked]="studentloan3">Are you repaying your Student Loan directly to the Student Loans Company by direct debit?</mat-checkbox>
+      <!-- <mat-checkbox class="mat-form-field-wrapper" color="primary" (change)="checkStudentLoan($event, 4)" [checked]="studentloan1"></mat-checkbox> -->
+      <div *ngIf="studentloan3 == true">
+          <h5 class="mt-2 mb-2 text-secondary">
+              You’ll have a Plan 1 Student Loan if:
+          </h5>
+          <p>1. you lived in Scotland or Northern Ireland when you started your course (undergraduate or postgraduate)</p>
+          <p>2. you lived in England or Wales and started your undergraduate course before 1 September 2012 </p>
+          <h5 class="mt-2 mb-2 text-secondary">
+              You’ll have a Plan 2 Student Loan if:
+          </h5>
+          <p>3. you lived in England or Wales and started your undergraduate course on or after 1 September 2012</p>
+          <p>4. your loan is a Part Time Maintenance Loan </p>
+          <p>5. your loan is an Advanced Learner Loan </p>
+          <p>6. your loan is a Postgraduate Healthcare Loan </p>
+          <h5 class="mt-2 mb-2 text-secondary">
+              What type of Student Loan do you have?
+          </h5>
+          <div *ngIf="step == 3" fxLayout="column" fxLayoutGap="16px">
+              <mat-radio-group formControlName="studentLoan" class="mat-form-field-wrapper" fxLayout="column" fxLayoutGap="16px">
+                  <mat-radio-button [checked]="true" value="Plan 1" color="primary">Plan 1</mat-radio-button>
+                  <mat-radio-button value="Plan 2" color="primary">Plan 2</mat-radio-button>
+                  <mat-radio-button value="Both" color="primary">Both</mat-radio-button>
+
+              </mat-radio-group>
+          </div>
+      </div>
+      <!-- <mat-checkbox class="mat-form-field-wrapper" color="primary" (change)="checkCurrentDriving($event, 5)" [checked]="studentloan1"></mat-checkbox> -->
+  </div>
+  <div fxLayout="column" fxLayoutGap="8px" *ngIf=" step == 4">
+      <label>Postgraduate Loan</label>
+      <mat-checkbox color="primary" (change)="checkPostgraduate($event, 1)" [checked]="Postgraduate1">Do you have a Postgraduate Loan which is not fully repaid?</mat-checkbox>
+      <mat-checkbox *ngIf="Postgraduate1" color="primary" (change)="checkPostgraduate($event, 2)" [checked]="Postgraduate2">Did you complete or leave your Postgraduate studies before 6th April?</mat-checkbox>
+      <!-- <mat-checkbox class="mat-form-field-wrapper" color="primary" (change)="checkStudentLoan($event, 4)" [checked]="studentloan1"></mat-checkbox> -->
+      <div *ngIf="Postgraduate2 == true">
+          <h5 class="mt-2 mb-2 text-secondary">
+              Are you repaying your Postgraduate Loan direct to the Student Loans Company by direct debit?
+          </h5>
+          <div fxLayout="column" fxLayoutGap="16px">
+              <mat-radio-group formControlName="postgraduateLoan" class="mat-form-field-wrapper" fxLayout="column" fxLayoutGap="16px">
+                  <mat-radio-button [checked]=true value=true color="primary">Yes</mat-radio-button>
+                  <mat-radio-button value=false color="primary">No</mat-radio-button>
+              </mat-radio-group>
+          </div>
+      </div>
+      <!-- <mat-checkbox class="mat-form-field-wrapper" color="primary" (change)="checkCurrentDriving($event, 5)" [checked]="studentloan1"></mat-checkbox> -->
+  </div>
+
+  <div *ngIf="step == 5" class="flex flex-col sm:flex-row">
+
+      <!-- <div *ngFor="let qualificationName of qualificationNames; let i=index" class="flex flex-col sm:flex-row"> -->
+      <mat-form-field class="mt-6 flex-auto">
+          <mat-label>Qualification Name </mat-label>
+          <input formControlName="qualificationName" matInput>
+      </mat-form-field>
+      <mat-form-field class="mt-6 flex-auto">
+          <mat-label>Qualification Year </mat-label>
+          <input formControlName="qualificationYear" type="number" matInput >
+      </mat-form-field>
+      <!-- </div> -->
+  </div>
+  <!-- <button (click)="addQualifacation()" *ngIf="step == 5" color="primary" mat-raised-button type="button">
+     Add Qualifacation
+  </button> -->
+
+  <div fxLayout="column" fxLayoutGap="8px" *ngIf=" step == 12">
+      <div *ngIf="studentloan3 == true">
+          <p>1. I authorize the company and any third-party nominated by the company to perform and approach previous employers, educations institutions, personal referees and/or government agencies to verify the information I have provided.
+              I consent to the company processing my personal data as defined in the Data Protection Act 2018; this may include sensitive personal data
+          </p>
+          <p class="mt-2 mb-2 text-secondary">2. I confirm that the submitted information is complete and correct and that any untrue or misleading information will give the employment business (the agency) the right to terminate my contract for services.</p>
+          <div fxLayout="column" fxLayoutGap="16px">
+              <mat-form-field fxFlex="auto">
+                  <mat-label>E-signature</mat-label>
+                  <input formControlName="eSignature" matInput >
+              </mat-form-field>
+              <mat-form-field fxFlex="auto">
+                  <mat-label>Date</mat-label>
+                  <input formControlName="agreementDate" matInput >
+              </mat-form-field>
+          </div>
+      </div>
+  </div>
+  <div *ngIf="step == 6" class="flex flex-col sm:flex-row">
+      <mat-form-field fxFlex="auto">
+          <mat-label>From
+          </mat-label>
+          <input type="number" formControlName="employmentHistroyFrom" matInput >
+      </mat-form-field>
+      <mat-form-field fxFlex="auto">
+          <mat-label>To</mat-label>
+          <input type="number" formControlName="employmentHistroyTo" matInput>
+      </mat-form-field>
+  </div>
+  <div *ngIf="step == 6" class="flex flex-col sm:flex-row">
+      <mat-form-field fxFlex="auto">
+          <mat-label>Name of Employer (Optional)
+          </mat-label>
+          <input formControlName="employmentHistroyName" matInput >
+      </mat-form-field>
+      <mat-form-field fxFlex="auto">
+          <mat-label>Address of Employer (Optional)</mat-label>
+          <input formControlName="employmentHistroyAddressEmployer" matInput>
+      </mat-form-field>
+  </div>
+  <div *ngIf="step == 6" class="flex flex-col sm:flex-row">
+      <mat-form-field fxFlex="auto">
+          <mat-label>Job Title (Optional)
+          </mat-label>
+          <input formControlName="employmentHistroyJobTitle" matInput >
+      </mat-form-field>
+  </div>
+  <div *ngIf="step == 6" class="flex flex-col sm:flex-row">
+      <mat-form-field fxFlex="auto">
+          <mat-label>Duties (Optional)
+          </mat-label>
+          <input formControlName="employmentHistroyDuties" matInput >
+      </mat-form-field>
+      <mat-form-field fxFlex="auto">
+          <mat-label>Rate of Pay (Optional)
+          </mat-label>
+          <input type="number" formControlName="employmentHistroyRatePay" matInput >
+      </mat-form-field>
+      <mat-form-field fxFlex="auto">
+          <mat-label>Reason for leaving (Optional)
+          </mat-label>
+          <input formControlName="employmentHistroyReasonLeaving" matInput >
+      </mat-form-field>
+  </div>
+  <div *ngIf="step == 6" class="flex flex-col sm:flex-row">
+      <mat-form-field fxFlex="auto">
+          <mat-label>Notice  in current position (Optional)
+          </mat-label>
+          <input formControlName="employmentHistroyNoticeRequiredCurrentPosition" matInput >
+      </mat-form-field>
+  </div>
+  <div *ngIf="step == 7" class="flex flex-col sm:flex-row">
+      <mat-form-field fxFlex="auto">
+          <mat-label>Name of Employer (Optional)
+          </mat-label>
+          <input formControlName="otherEmploymentName" matInput >
+      </mat-form-field>
+  </div>
+  <div *ngIf="step == 7" class="flex flex-col sm:flex-row">
+      <mat-form-field fxFlex="auto">
+          <mat-label>Address of Employer (Optional)</mat-label>
+          <input formControlName="otherEmploymentAddressEmployer" matInput>
+      </mat-form-field>
+  </div>
+  <div *ngIf="step == 7" class="flex flex-col sm:flex-row">
+      <mat-form-field fxFlex="auto">
+          <mat-label>Job Title (Optional)
+          </mat-label>
+          <input formControlName="otherEmploymentJobTitle" matInput >
+      </mat-form-field>
+  </div>
+  <div *ngIf="step == 8" class="flex flex-col sm:flex-row">
+      <mat-form-field fxFlex="auto">
+          <mat-label>Company Name (Optional)
+          </mat-label>
+          <input formControlName="referenceCompanyName" matInput >
+      </mat-form-field>
+  </div>
+  <div *ngIf="step == 8" class="flex flex-col sm:flex-row">
+      <mat-form-field fxFlex="auto">
+          <mat-label>Address (Optional)
+          </mat-label>
+          <input formControlName="referenceAddress" matInput >
+      </mat-form-field>
+  </div>
+  <div *ngIf="step == 8" class="flex flex-col sm:flex-row">
+      <mat-form-field fxFlex="auto">
+          <mat-label>Email (Optional)
+          </mat-label>
+          <input formControlName="referenceEmail" matInput >
+      </mat-form-field>
+  </div>
+  <div *ngIf="step == 8" class="flex flex-col sm:flex-row">
+      <mat-form-field fxFlex="auto">
+          <mat-label>Contact Person (Optional)
+          </mat-label>
+          <input formControlName="referenceContactPerson" matInput >
+      </mat-form-field>
+  </div>
+  <div *ngIf="step == 9" class="flex flex-col sm:flex-row">
+      <mat-form-field fxFlex="auto">
+          <mat-label>CRIMINAL RECORDS
+          </mat-label>
+          <textarea matInput rows="5" formControlName="criminalRecords" cols="40" value=""></textarea>
+      </mat-form-field>
+  </div>
+
+  <!-- Profile Photo -->
+
+
+
+  <div *ngIf="step == 10">
+
+      <div class="columns">
+          <div class="column is-one-third">
+              <div class="field">
+                  <div class="file has-name is-primary is-fullwidth">
+                      <label class="file-label">
+                  <input
+                    class="file-input"
+                    type="file"
+                    name="file"
+                    #fileInput
+                    (change)="onChange(fileInput.files[0])"
+                    style="opacity: 0;width:128px"
+                  />
+                  <span class="file-cta mat-raised-button">
+                    <span class="file-icon">
+                      <!-- <fa-icon [icon]="['fas', 'upload']"></fa-icon> -->
+                    </span>
+                    <span class="file-label mat-raised-button">
+                      Choose a file…
+                    </span>
+                  </span>
+                  <span class="file-name">
+                    {{ fileName }}
+                  </span>
+                  <button type="button"mat-button style="    margin-left: 128px;background: #5c77ff;color: white;" color="primary" (click)="onUpload()" [attr.disabled]="isUploading ? '' : null">
+                      Upload
+                    </button>
+                </label>
+                  </div>
+              </div>
+
+              <article class="message" *ngIf="infoMessage">
+                  <div class="message-body">
+                      {{ infoMessage }}
+                  </div>
+              </article>
+
+              <div class="field" *ngIf="!infoMessage">
+                  <div class="control">
+                      <progress class="progress is-primary" style="visibility: hidden;" [attr.value]="progress" max="100"></progress>
+                  </div>
+              </div>
+
+              <!-- <div class="field">
+                  <div class="control" style="text-align: center;">
+                      <button mat-button style="    margin-left: 128px;background: #5c77ff;color: white;" color="primary" (click)="onUpload()" [attr.disabled]="isUploading ? '' : null">
+                  Upload
+                </button>
+                  </div>
+              </div> -->
+          </div>
+          <div class="column">
+              <figure class="image is-128x128">
+                  <img [src]="imageUrl" style="padding: auto;margin:auto; width: 38%;height:38%" />
+              </figure>
+          </div>
+      </div>
+  </div>
+
+  <div *ngIf="step == 11" class="flex flex-col sm:flex-row">
+      <mat-form-field fxFlex="auto">
+          <input formControlName="specialArrangementImpairment" matInput >
+          <mat-hint>Please specify any special arrangements for work associated with any impairment.
+          </mat-hint>
+      </mat-form-field>
+      <mat-form-field fxFlex="auto">
+          <input formControlName="specialArrangementAttendInterview" matInput >
+          <mat-hint>Please specify special arrangements you will need to attend an interview
+          </mat-hint>
+      </mat-form-field>
+  </div>
+  <div *ngIf="step == 11" class="flex flex-col sm:flex-row">
+      <mat-form-field fxFlex="auto">
+          <input formControlName="listAnyDiseases" matInput >
+          <mat-hint>Please list any diseases, disorders, allergies, muscular or musculoskeletal injuries from which you have suffered to do suffer</mat-hint>
+      </mat-form-field>
+  </div>
+  <div *ngIf="step == 11" class="flex flex-col sm:flex-row">
+      <mat-form-field fxFlex="auto">
+          <input formControlName="medicineDrugsTreatment" matInput >
+          <mat-hint>Please detail any form of medicine, drugs or treatment you are currently and/or regularly receiving.</mat-hint>
+      </mat-form-field>
+  </div>
+
+  <div *ngIf="step == 11" class="flex flex-col sm:flex-row">
+      <mat-form-field fxFlex="auto">
+          <input formControlName="allAbsencesWordPast12Month" matInput >
+          <mat-hint>Please list all absences from work in the past 12 months and the reasons for such absences.</mat-hint>
+      </mat-form-field>
+  </div>
+  <mat-form-field *ngIf="step == 12" fxFlex="grow">
+      <mat-label>Email</mat-label>
+      <input type="email" formControlName="emailAddress" matInput autocomplete="off" />
+      <!-- <mat-error *ngIf="isControlHasError('emailAddress','')">
+          <strong>You have to input Correctly</strong>
+      </mat-error>
+      <mat-error *ngIf="isControlHasError('emailAddress','email')">
+          <strong>You have Input Email Correctly</strong>
+      </mat-error> -->
+  </mat-form-field>
+  <mat-form-field *ngIf="step == 12" fxFlex="grow">
+      <mat-label>Password</mat-label>
+      <input [type]="inputType" formControlName="hash" matInput >
+      <button (click)="toggleVisibility()" mat-icon-button matSuffix matTooltip="Toggle Visibility" type="button">
+<mat-icon *ngIf="visible" [icIcon]="icVisibility"></mat-icon>
+<mat-icon *ngIf="!visible" [icIcon]="icVisibilityOff"></mat-icon>
+</button>
+      <mat-hint>Click the eye to toggle visibility</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="step == 12" fxFlex="grow">
+      <mat-label>Password (Confirm)</mat-label>
+      <input [type]="inputType" formControlName="passwordConfirm" matInput >
+      <button (click)="toggleVisibility()" mat-icon-button matSuffix matTooltip="Toggle Visibility" type="button">
+<mat-icon *ngIf="visible" [icIcon]="icVisibility"></mat-icon>
+<mat-icon *ngIf="!visible" [icIcon]="icVisibilityOff"></mat-icon>
+</button>
+      <mat-hint>Please repeat your password from above</mat-hint>
+  </mat-form-field>
+<!-- <mat-form-field *ngIf=" step == 14" fxFlex="grow">
+  <mat-label>Date</mat-label>
+  <input formControlName="agreementDate" matInput />
+</mat-form-field> -->
+<!-- <mat-form-field *ngIf=" step == 14" fxFlex="grow">
+  <mat-label>E-signature</mat-label>
+  <input formControlName="eSignature" matInput />
+</mat-form-field> -->
+<div *ngIf="step == 13" class="flex flex-col sm:flex-row">
+  <h5 class="mt-2 mb-2 text-secondary">
+      Please read this carefully before signing this application
+  </h5>
+  <p>1. I authorize the company and any third-party nominated by the company to perform and approach previous employers, educations institutions, personal referees and/or government agencies to verify the information I have provided. I consent
+      to the company processing my personal data as defined in the Data Protection Act 2018; this may include sensitive personal data
+  </p>
+  <p>2. I confirm that the submitted information is complete and correct and that any untrue or misleading information will give the employment business (the agency) the right to terminate my contract for services.
+  </p>
+</div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <!-- <button mat-button mat-dialog-close type="button">CANCEL</button> -->
+    <button [disabled]="step == 0" fxFlex="auto" (click)="ChangeStep(-1)" color="primary" mat-raised-button type="button">
+      Back Step
+    </button>
+      <button [disabled]="step == 12" fxFlex="auto" (click)="ChangeStep(1)" color="primary" mat-raised-button type="button">
+       Next Step
+    </button>
+    <button *ngIf="isCreateMode() && step == 12" color="primary" mat-raised-button type="submit">CREATE WORKER</button>
+    <button *ngIf="isUpdateMode() && step == 12" color="primary" mat-raised-button type="submit">UPDATE WORKER</button>
+  </mat-dialog-actions>
+</form>
+
+<mat-menu #settingsMenu="matMenu" xPosition="before" yPosition="below">
+  <button mat-menu-item>
+    <mat-icon [icIcon]="icPrint"></mat-icon>
+    <span>Print</span>
+  </button>
+
+  <button mat-menu-item>
+    <mat-icon [icIcon]="icDownload"></mat-icon>
+    <span>Export</span>
+  </button>
+
+  <button mat-menu-item>
+    <mat-icon [icIcon]="icDelete"></mat-icon>
+    <span>Delete</span>
+  </button>
+</mat-menu>

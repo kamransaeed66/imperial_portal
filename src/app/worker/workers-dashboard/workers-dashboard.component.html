@@ -1,0 +1,30 @@
+<vex-secondary-toolbar current="Dashboard">
+
+</vex-secondary-toolbar>
+
+<div class="p-gutter"
+  gdColumns="1fr 1fr"
+  gdColumns.lt-md="1fr 1fr"
+  gdColumns.lt-sm="1fr"
+  gdGap="16px"
+  vexContainer>
+  <vex-widget-quick-value-center
+    [icon]="icGroup"
+    [change]="124.4"
+    iconClass="text-primary bg-primary-light"
+    gdColumn.lt-sm="1"
+    label="Completed shifts"
+    [value]="completedShifts">
+  </vex-widget-quick-value-center>
+  <vex-widget-quick-value-center
+    [icon]="icTimer"
+    [change]="34.5"
+    iconClass="text-teal bg-teal-light"
+    gdColumn.lt-sm="1"
+    label="Total Hours"
+    [value]="totalHours">
+  </vex-widget-quick-value-center>
+  <div gdColumn="1 / -1"  gdColumn.lt-sm="1" style="padding-top: 15px;">
+    <vex-worker-job-table></vex-worker-job-table>
+  </div>
+</div>

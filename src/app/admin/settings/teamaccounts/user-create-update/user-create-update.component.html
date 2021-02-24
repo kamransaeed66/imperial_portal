@@ -1,0 +1,75 @@
+<form (ngSubmit)="save()" [formGroup]="form">
+  <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+    <h2 *ngIf="form.get('firstName').value || form.get('lastName').value"
+        class="headline m-0"
+        fxFlex="auto">{{ form.get('firstName').value + ' ' + form.get('lastName').value }}</h2>
+    <h2 *ngIf="!form.get('firstName').value && !form.get('lastName').value"
+        class="headline m-0"
+        fxFlex="auto">New User</h2>
+
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+      <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+  </div>
+
+  <mat-divider class="-mx-6 text-border"></mat-divider>
+
+  <mat-dialog-content fxLayout="column">
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>First Name</mat-label>
+        <input cdkFocusInitial formControlName="firstName" matInput>
+
+        <mat-icon [icIcon]="icPerson" class="mr-3" matPrefix></mat-icon>
+      </mat-form-field>
+
+      <mat-form-field class="sm:mt-6 sm:ml-6 flex-auto">
+        <mat-label>Last Name</mat-label>
+        <input cdkFocusInitial formControlName="lastName" matInput>
+
+        <mat-icon [icIcon]="icPerson" class="mr-3" matPrefix></mat-icon>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field class="flex-auto">
+      <mat-label>Email Adress</mat-label>
+      <input formControlName="emailAddress" matInput>
+
+      <mat-icon [icIcon]="icEditLocation" class="mr-3" matPrefix></mat-icon>
+    </mat-form-field>
+
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="flex-auto">
+        <mat-label>Phone Number</mat-label>
+        <input formControlName="phoneNumber" matInput>
+        <mat-icon [icIcon]="icPhone" class="mr-3" matPrefix></mat-icon>
+      </mat-form-field>
+    </div>
+
+
+    <div class="flex flex-col sm:flex-row" *ngIf="this.mode === 'update'">
+      <mat-form-field class="flex-auto">
+        <mat-label>New Password</mat-label>
+        <input type="password" formControlName="Password" minlength="6" matInput [(ngModel)]="password">
+        <mat-error *ngIf="form.get('Password').hasError('minlength')" >
+          Password should have minimum 6 characters.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="sm:ml-6 flex-auto">
+        <mat-label>Confirm New Password</mat-label>
+        <input type="password" formControlName="password2" minlength="6" matInput pattern="{{password}}" [(ngModel)]="password2">
+        <mat-error *ngIf="form.get('password2').hasError('pattern')" >
+          Password & Confirm Password does not match.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">CANCEL</button>
+    <button *ngIf="isCreateMode()" color="primary" mat-button type="submit">CREATE USER</button>
+    <button [disabled]="form.get('password2').hasError('pattern') || password !== password2" *ngIf="isUpdateMode()" color="primary" mat-button type="submit">UPDATE USER</button>
+  </mat-dialog-actions>
+</form>

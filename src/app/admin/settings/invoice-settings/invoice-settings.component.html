@@ -1,0 +1,235 @@
+<vex-secondary-toolbar current="Invoice Settings">
+</vex-secondary-toolbar>
+
+
+<div [@stagger]="true" class="p-gutter" vexContainer>
+
+  <div [formGroup]="form" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" *ngIf="defaults | async; else loading">
+    <div @fadeInUp class="card" fxFlex="auto">
+      <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
+        <h2 class="title m-0">Invoice</h2>
+      </div>
+
+      <div class="px-6 py-4" fxLayout="column">
+
+        <div class="flex flex-col sm:flex-row">
+          <mat-form-field class="flex-auto">
+            <mat-label>Due date</mat-label>
+            <input onkeypress="return event.charCode >= 48 && event.charCode <= 57" formControlName="dueDate" matInput required>
+          </mat-form-field>
+
+          <mat-form-field class="sm:ml-6 flex-auto">
+            <mat-label>VAT</mat-label>
+            <input formControlName="vat" matInput required onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+          </mat-form-field>
+        </div>
+
+        <div class="flex flex-col sm:flex-row">
+          <mat-form-field class="flex-auto">
+            <mat-label>Pay rate (Under 25)</mat-label>
+            <input formControlName="payrateU25" matInput onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+          </mat-form-field>
+
+          <mat-form-field class="sm:ml-6 flex-auto">
+            <mat-label>Pay rate (Over 25)</mat-label>
+            <input formControlName="payrateO25" matInput onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+          </mat-form-field>
+        </div>
+
+        <h4>Housekeeping</h4>
+        <div class="flex flex-col sm:flex-row">
+          <mat-form-field class="flex-auto">
+            <mat-label>Charge rate (Under 25)</mat-label>
+            <input formControlName="hk_chargerateU25" matInput onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+          </mat-form-field>
+
+          <mat-form-field class="sm:ml-6 flex-auto">
+            <mat-label>Charge rate (Over 25)</mat-label>
+            <input formControlName="hk_chargerateO25" matInput onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+          </mat-form-field>
+        </div>
+
+        <h4>Food and Beverage</h4>
+        <div class="flex flex-col sm:flex-row">
+          <mat-form-field class="flex-auto">
+            <mat-label>Charge rate (Under 25)</mat-label>
+            <input formControlName="fab_chargerateU25" matInput onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+          </mat-form-field>
+
+          <mat-form-field class="sm:ml-6 flex-auto">
+            <mat-label>Charge rate (Over 25)</mat-label>
+            <input formControlName="fab_chargerateO25" matInput onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+          </mat-form-field>
+        </div>
+
+        <h4>Back of House</h4>
+        <div class="flex flex-col sm:flex-row">
+          <mat-form-field class="flex-auto">
+            <mat-label>Charge rate (Under 25)</mat-label>
+            <input formControlName="boh_chargerateU25" matInput onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+          </mat-form-field>
+
+          <mat-form-field class="sm:ml-6 flex-auto">
+            <mat-label>Charge rate (Over 25)</mat-label>
+            <input formControlName="boh_chargerateO25" matInput onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+          </mat-form-field>
+        </div>
+        <mat-form-field>
+          <mat-label>Invoice footer</mat-label>
+          <textarea  formControlName="footer" matInput required></textarea>
+        </mat-form-field>
+
+        <div class="field">
+          <div class="file has-name is-primary is-fullwidth">
+            <label class="file-label">
+              <input
+                class="file-input"
+                type="file"
+                name="file"
+                #fileInput
+                (change)="onChange(fileInput.files[0])"
+                style="opacity: 0;width:1px"
+              />
+              <span class="file-cta">
+                <span class="file-label mat-raised-button">
+                  Choose logo
+                </span>
+              </span>
+              <span class="file-name">
+                {{ fileName }}
+              </span>
+              <button color="primary" mat-raised-button style="margin-left: 128px;" (click)="onUpload()" [disabled]="isUploading" type="button">
+              Upload</button>
+            </label>
+          </div>
+        </div>
+
+        <div class="column">
+          <figure class="image is-128x128 mt-3">
+              <img [src]="form.value.logo ? form.value.logo : imageUrl" style="width: 20%;height:20%" />
+          </figure>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+          <!-- <button mat-button  type="button">CANCEL</button> -->
+          <button color="primary" mat-raised-button [disabled]="!form.valid" type="button" (click)="onSubmit()">SUBMIT</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #loading>
+    <div [formGroup]="form" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+      <div @fadeInUp class="card" fxFlex="auto">
+        <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
+          <h2 class="title m-0">Invoice</h2>
+        </div>
+
+        <div class="px-6 py-4" fxLayout="column">
+
+          <div class="flex flex-col sm:flex-row">
+            <mat-form-field class="flex-auto">
+              <mat-label>Due date</mat-label>
+              <input onkeypress="return event.charCode >= 48 && event.charCode <= 57" formControlName="dueDate" matInput required>
+            </mat-form-field>
+
+            <mat-form-field class="sm:ml-6 flex-auto">
+              <mat-label>VAT</mat-label>
+              <input formControlName="vat" matInput required onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+            </mat-form-field>
+          </div>
+
+          <div class="flex flex-col sm:flex-row">
+            <mat-form-field class="flex-auto">
+              <mat-label>Pay rate (Under 25)</mat-label>
+              <input formControlName="payrateU25" matInput onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+            </mat-form-field>
+
+            <mat-form-field class="sm:ml-6 flex-auto">
+              <mat-label>Pay rate (Over 25)</mat-label>
+              <input formControlName="payrateO25" matInput onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+            </mat-form-field>
+          </div>
+          <h4>Housekeeping</h4>
+          <div class="flex flex-col sm:flex-row">
+            <mat-form-field class="flex-auto">
+              <mat-label>Charge rate (Under 25)</mat-label>
+              <input formControlName="hk_chargerateU25" matInput onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+            </mat-form-field>
+
+            <mat-form-field class="sm:ml-6 flex-auto">
+              <mat-label>Charge rate (Over 25)</mat-label>
+              <input formControlName="hk_chargerateO25" matInput onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+            </mat-form-field>
+          </div>
+
+          <h4>Food and Beverage</h4>
+          <div class="flex flex-col sm:flex-row">
+            <mat-form-field class="flex-auto">
+              <mat-label>Charge rate (Under 25)</mat-label>
+              <input formControlName="fab_chargerateU25" matInput onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+            </mat-form-field>
+
+            <mat-form-field class="sm:ml-6 flex-auto">
+              <mat-label>Charge rate (Over 25)</mat-label>
+              <input formControlName="fab_chargerateO25" matInput onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+            </mat-form-field>
+          </div>
+
+          <h4>Back of House</h4>
+          <div class="flex flex-col sm:flex-row">
+            <mat-form-field class="flex-auto">
+              <mat-label>Charge rate (Under 25)</mat-label>
+              <input formControlName="boh_chargerateU25" matInput onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+            </mat-form-field>
+
+            <mat-form-field class="sm:ml-6 flex-auto">
+              <mat-label>Charge rate (Over 25)</mat-label>
+              <input formControlName="boh_chargerateO25" matInput onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+            </mat-form-field>
+          </div>
+          <mat-form-field>
+            <mat-label>Invoice footer</mat-label>
+            <textarea  formControlName="footer" matInput required></textarea>
+          </mat-form-field>
+
+          <div class="field">
+            <div class="file has-name is-primary is-fullwidth">
+              <label class="file-label">
+                <input
+                  class="file-input"
+                  type="file"
+                  name="file"
+                  #fileInput
+                  (change)="onChange(fileInput.files[0])"
+                  style="opacity: 0;width:1px"
+                />
+                <span class="file-cta">
+                  <span class="file-label mat-raised-button">
+                    Choose logo
+                  </span>
+                </span>
+                <span class="file-name">
+                  {{ fileName }}
+                </span>
+                <button color="primary" mat-raised-button style="margin-left: 128px;" (click)="onUpload()" [disabled]="isUploading" type="button">
+                Upload</button>
+              </label>
+            </div>
+          </div>
+
+          <div class="column">
+            <figure class="image is-128x128 mt-3">
+                <img [src]="imageUrl" style="width: 20%;height:20%" />
+            </figure>
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+            <!-- <button mat-button  type="button">CANCEL</button> -->
+            <button color="primary" mat-raised-button [disabled]="!form.valid" type="button" (click)="onSubmit()">SUBMIT</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

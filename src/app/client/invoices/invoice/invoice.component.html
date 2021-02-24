@@ -1,0 +1,146 @@
+<vex-secondary-toolbar>
+  <!-- <vex-breadcrumbs [crumbs]="['Invoice', 'Pdf']" class="flex-auto"></vex-breadcrumbs> -->
+  <p  class="flex-auto">View Invoice</p>
+  <button class="ml-2" color="primary" mat-raised-button type="button" [useExistingCss]="true"printSectionId="print-section" ngxPrint>
+    Download PDF +
+  </button>
+</vex-secondary-toolbar>
+<div  id="print-section" class="p-gutter container">
+   <div @fadeInUp class="card p-16">
+    <div fxLayout="row">
+      <div fxFlex="50%">
+        <img class="h-40" src="assets/img/demo/logo_new.jpg">
+
+        <div class="mt-12">
+          <!-- <h4 class="body-2 text-secondary mt-0">BILL TO</h4> -->
+          <h3 class="title m-0">BILL TO</h3>
+          <div class="text-secondary">
+            <p class="m-0">{{invoiceObj.client_Id.firstName}} {{invoiceObj.client_Id.lastName}}</p>
+            <p class="m-0">{{invoiceObj.client_Id.companyAddress}}</p>
+            <p class="m-0">{{invoiceObj.client_Id.addressLine2}}</p>
+            <p class="m-0">{{invoiceObj.client_Id.city}}</p>
+            <p class="m-0">{{invoiceObj.client_Id.postcode}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-right body-1" fxFlex="50%" fxLayout="column" fxLayoutAlign="start end">
+        <!-- <h1 class="display-2 m-0">INVOICE</h1> -->
+        <table class="mt-6">
+          <tbody>
+          <tr>
+            <td class="text-secondary body-2 "><h4 class="title">Invoice #</h4></td>
+            <td class="text-left pl-4">{{invoiceObj.invoiceId}}</td>
+          </tr>
+          <tr>
+            <td class="text-secondary body-2">Created:</td>
+            <td class="text-left pl-4">{{invoiceObj.invoiceDate | date:'yyyy-MM-dd'}}</td>
+          </tr>
+          <tr>
+            <td class="text-secondary body-2 mt-4">Due:</td>
+            <td class="text-left pl-4">{{invoiceObj.invoiceDueDate | date:'yyyy-MM-dd'}}</td>
+          </tr>
+
+          </tbody>
+        </table>
+        <table class="mt-6">
+          <tbody>
+            <tr>
+              <td class="text-secondary body-2">Client Ref:</td>
+              <td class="text-left pl-4">{{invoiceObj.client_Id.id}}</td>
+            </tr>
+            <tr>
+              <td class="text-secondary body-2">VAT Reg.:</td>
+              <td class="text-left pl-4">{{invoiceObj.client_Id.VATNumber}}</td>
+            </tr>
+          </tbody>
+        </table>
+
+
+
+        <div class="mt-12">
+          <h3 class="title m-0">IMPERIAL RECRUITMENT</h3>
+          <div class="text-secondary">
+            <p class="m-0">124 Great Portland Street</p>
+            <p class="m-0">London W1W 6PP</p>
+            <!-- <p class="m-0">COMPANY_CITY</p> -->
+            <!-- <p class="m-0">COMPANY_POSTCODE</p> -->
+
+            <!-- <p class="m-0 mt-3">
+              <ic-icon [icon]="icMail" class="mr-2" inline="true" size="1.25em"></ic-icon>
+              <span>hello@example.com</span>
+            </p>
+
+            <p class="m-0">
+              <ic-icon [icon]="icPhone" class="mr-2" inline="true" size="1.25em"></ic-icon>
+              <span>+1 (961) 400-3535</span>
+            </p> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <table class="table w-full mt-24">
+      <thead>
+      <tr>
+        <td class="body-2 text-secondary">Employee No.</td>
+        <td class="body-2 text-secondary">Employee Name	</td>
+        <td class="body-2 text-secondary">Timesheet No.</td>
+        <td class="body-2 text-secondary">Hours</td>
+        <td class="body-2 text-secondary">Charge Rate	</td>
+        <td class="body-2 text-secondary text-right">NET</td>
+      </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let invoice of invoiceObj.workers">
+          <td class="py-6 border-b">{{invoice.workerId.workerId}}</td>
+          <td class="py-6 border-b">{{invoice.workerId.forename}} {{invoice.workerId.surename}}</td>
+          <td class="py-6 border-b">{{invoiceObj.timesheetId}}</td>
+          <td class="py-6 border-b">{{invoice.hours}}</td>
+          <td class="py-6 border-b">£{{invoice.chargeRate}}/hr</td>
+          <td class="py-6 border-b font-medium text-right">{{invoice.net}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="mt-8" fxLayout="column" fxLayoutAlign="start end">
+      <table class="subheading-2 font-medium pr-6">
+        <tbody>
+        <tr>
+          <td class="text-secondary text-right">Subtotal:</td>
+          <td class="pl-12">£{{getNetTotal()}}</td>
+        </tr>
+        <tr>
+          <td class="text-secondary text-right">VAT:</td>
+          <td class="pl-12">£{{invoiceObj.totalVat}}%</td>
+        </tr>
+        <tr class="bt-total">
+          <td class="headline text-right pt-6">TOTAL</td>
+          <td class="headline pl-12 pt-6">£{{getTotal()}}‬</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mt-12">
+      <h4 class="body-2 text-secondary mt-0">Thank you for your business.</h4>
+      <h3 class="title m-0">Pay by cheque:</h3>
+      <div class="text-secondary mb-2">
+        <p class="m-0">IMPERIAL RECRUITMENT AGENCY LTD</p>
+        <p class="mt-2">124 Great Portland Street, London W1W 6PP</p>
+      </div>
+
+      <h3 class="title m-0">Pay by BACS:</h3>
+      <div class="text-secondary mb-2">
+        <p class="m-0">Bank: Lloyds Bank Plc</p>
+        <p class="m-0">Account Number: 01933208</p>
+        <p class="m-0">Sort Code: 30-93-68</p>
+        <p class="m-0">Account Name: Imperial Recruitment Agency Ltd.</p>
+      </div>
+
+      <h4 class="body-2 text-secondary mt-2">Please ensure we receive your remittance advice to: <a>sales@imperialrecruitment.com</a></h4>
+      <h4 class="body-2 text-secondary mt-0">Account enquiries please phone 0208 962 9990 (ext. 26354).</h4>
+      <h4 class="body-2 text-secondary mt-0">Invoice queries must be advised within 10 days of receipt.</h4>
+
+    </div>
+  </div>
+</div>

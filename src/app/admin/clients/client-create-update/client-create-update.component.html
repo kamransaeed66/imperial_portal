@@ -1,0 +1,149 @@
+<form (ngSubmit)="save()" [formGroup]="form">
+  <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+    <!-- <img *ngIf="form.get('profilePhoto').value" [src]="form.get('profilePhoto').value" class="avatar mr-5"> -->
+    <h2 *ngIf="form.get('firstName').value || form.get('lastName').value"
+        class="headline m-0"
+        fxFlex="auto">{{ form.get('firstName').value + ' ' + form.get('lastName').value }}</h2>
+    <h2 *ngIf="!form.get('firstName').value && !form.get('lastName').value"
+        class="headline m-0"
+        fxFlex="auto">New Client</h2>
+
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+      <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+  </div>
+
+  <mat-divider class="-mx-6 text-border"></mat-divider>
+
+  <mat-dialog-content fxLayout="column">
+    <div *ngIf="updateType === 'account' || this.mode === 'create'" class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>First Name</mat-label>
+        <input cdkFocusInitial formControlName="firstName" matInput>
+
+        <mat-icon [icIcon]="icPerson" class="mr-3" matPrefix></mat-icon>
+      </mat-form-field>
+
+      <mat-form-field class="sm:mt-6 sm:ml-6 flex-auto">
+        <mat-label>Last Name</mat-label>
+        <input cdkFocusInitial formControlName="lastName" matInput>
+
+        <mat-icon [icIcon]="icPerson" class="mr-3" matPrefix></mat-icon>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field *ngIf="updateType === 'account' || this.mode === 'create'" class="flex-auto">
+      <mat-label>Email Adress</mat-label>
+      <input formControlName="emailAddress" matInput>
+
+      <mat-icon [icIcon]="icEditLocation" class="mr-3" matPrefix></mat-icon>
+    </mat-form-field>
+
+    <div *ngIf="updateType === 'client' || this.mode === 'create'" class="flex flex-col sm:flex-row">
+      <mat-form-field class="flex-auto">
+        <mat-label>Company Name</mat-label>
+        <input formControlName="companyName" matInput>
+      </mat-form-field>
+
+      <mat-form-field class="sm:ml-6 flex-auto">
+        <mat-label>Company Address</mat-label>
+        <input formControlName="companyAddress" matInput>
+      </mat-form-field>
+    </div>
+    <div *ngIf="updateType === 'client' || this.mode === 'create'" class="flex flex-col sm:flex-row">
+      <mat-form-field class="flex-auto">
+        <mat-label>Company Phone Number</mat-label>
+        <input formControlName="companyPhoneNumber" pattern="[0-9]*" minlength="10" maxlength="14" onkeypress="return event.charCode >= 48 && event.charCode <= 57"  matInput>
+      </mat-form-field>
+
+      <mat-form-field class="sm:ml-6 flex-auto">
+        <mat-label>Email Address Accounts Team</mat-label>
+        <input formControlName="emailAddressAccountsTeam" matInput>
+      </mat-form-field>
+    </div>
+    <div *ngIf="updateType === 'client' || this.mode === 'create'" class="flex flex-col sm:flex-row">
+      <mat-form-field class="flex-auto">
+        <mat-label>VAT Number</mat-label>
+        <input formControlName="VATNumber" matInput>
+      </mat-form-field>
+
+      <mat-form-field class="sm:ml-6 flex-auto">
+        <mat-label>Company RegNumber</mat-label>
+        <input formControlName="companyRegNumber" matInput>
+      </mat-form-field>
+    </div>
+    <div *ngIf="updateType === 'account' || this.mode === 'create'" class="flex flex-col sm:flex-row">
+      <mat-form-field class="flex-auto">
+        <mat-label>Position</mat-label>
+        <input formControlName="position" matInput>
+        <mat-icon [icIcon]="icMyLocation" class="mr-3" matPrefix></mat-icon>
+      </mat-form-field>
+    </div>
+    <div *ngIf="updateType === 'client' || this.mode === 'create'">
+
+      <h4>Housekeeping</h4>
+      <div class="flex flex-col sm:flex-row">
+        <mat-form-field class="flex-auto">
+          <mat-label>Charge rate (Under 25)</mat-label>
+          <input formControlName="hk_chargerateU25" matInput onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+        </mat-form-field>
+
+        <mat-form-field class="sm:ml-6 flex-auto">
+          <mat-label>Charge rate (Over 25)</mat-label>
+          <input formControlName="hk_chargerateO25" matInput onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+        </mat-form-field>
+      </div>
+
+      <h4>Food and Beverage</h4>
+      <div class="flex flex-col sm:flex-row">
+        <mat-form-field class="flex-auto">
+          <mat-label>Charge rate (Under 25)</mat-label>
+          <input formControlName="fab_chargerateU25" matInput onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+        </mat-form-field>
+
+        <mat-form-field class="sm:ml-6 flex-auto">
+          <mat-label>Charge rate (Over 25)</mat-label>
+          <input formControlName="fab_chargerateO25" matInput onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+        </mat-form-field>
+      </div>
+
+      <h4>Back of House</h4>
+      <div class="flex flex-col sm:flex-row">
+        <mat-form-field class="flex-auto">
+          <mat-label>Charge rate (Under 25)</mat-label>
+          <input formControlName="boh_chargerateU25" matInput onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+        </mat-form-field>
+
+        <mat-form-field class="sm:ml-6 flex-auto">
+          <mat-label>Charge rate (Over 25)</mat-label>
+          <input formControlName="boh_chargerateO25" matInput onkeypress="return event.charCode != 47 && event.charCode >= 46 && event.charCode <= 57">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div *ngIf="updateType === 'account'" class="flex flex-col sm:flex-row">
+      <mat-form-field class="flex-auto">
+        <mat-label>New Password</mat-label>
+        <input type="password" formControlName="Password" minlength="6" matInput [(ngModel)]="password">
+        <mat-error *ngIf="form.get('Password').hasError('minlength')" >
+          Password should have minimum 6 characters.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="sm:ml-6 flex-auto">
+        <mat-label>Confirm New Password</mat-label>
+        <input type="password" formControlName="password2" minlength="6" matInput pattern="{{password}}" [(ngModel)]="password2">
+        <mat-error *ngIf="form.get('password2').hasError('pattern')" >
+          Password & Confirm Password does not match.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">CANCEL</button>
+    <button *ngIf="isCreateMode()" color="primary" mat-button type="submit">CREATE CLIENT</button>
+    <button [disabled]="form.get('password2').hasError('pattern') || password !== password2" *ngIf="isUpdateMode()" color="primary" mat-button type="submit">UPDATE CLIENT</button>
+  </mat-dialog-actions>
+</form>

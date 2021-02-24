@@ -1,0 +1,43 @@
+<vex-secondary-toolbar current="Company details">
+  <!-- <vex-breadcrumbs [crumbs]="['Settings', 'Company details']" fxFlex="auto"></vex-breadcrumbs> -->
+
+  <!-- <button class="ml-2" color="primary" mat-icon-button type="button">
+    <mat-icon [icIcon]="icMoreVert"></mat-icon>
+  </button> -->
+</vex-secondary-toolbar>
+
+
+<div [@stagger]="true" class="p-gutter" vexContainer>
+
+  <div [formGroup]="form" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+    <div @fadeInUp class="card" fxFlex="auto">
+      <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
+        <h2 class="title m-0">Company Details</h2>
+      </div>
+
+      <div class="px-6 py-4" fxLayout="column">
+        <mat-form-field>
+          <mat-label>Comopany Name</mat-label>
+          <input formControlName="companyName" matInput required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Address</mat-label>
+          <input  formControlName="companyAddress" matInput required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Phone Number</mat-label>
+          <input formControlName="companyPhoneNumber" pattern="[0-9]*" minlength="10"maxlength="14"onkeypress="return event.charCode >= 48 && event.charCode <= 57"  matInput required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>VAT Number</mat-label>
+          <input formControlName="VATNumber" matInput required >
+        </mat-form-field>
+
+        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+          <button mat-button type="button">CANCEL</button>
+          <button color="primary" mat-raised-button type="button" (click)="onSubmit()">SUBMIT</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

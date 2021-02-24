@@ -1,0 +1,143 @@
+<div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+  <h2 class="headline m-0" fxFlex="auto">Job: #{{viewjobData.JobId}}</h2>
+</div>
+
+<mat-divider class="-mx-3 text-border"></mat-divider>
+
+
+<mat-dialog-content fxLayout="column">
+  <div class="flex-auto">
+    <div *ngFor="let shift of viewjobData.shifts; let i=index;">
+      <h4 *ngIf="viewjobData.shifts.length > 1" class="m-0" fxFlex="auto">Shift: {{i+1}}</h4>
+      <div class="px-gutter py-4" gdColumns="1fr 1fr" gdColumns.xs="1fr" gdGap="16px">
+        <div class="py-3" fxLayout="row" fxLayoutAlign="start center">
+          <div @scaleIn
+              class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+            <ic-icon [icon]="icBuilding" size="20px"></ic-icon>
+          </div>
+
+          <div @fadeInRight>
+            <p class="m-0 body-1" >{{shift.department}}</p>
+            <p class="m-0 caption text-hint uppercase">Department</p>
+          </div>
+        </div>
+
+        <div class="py-3" fxLayout="row" fxLayoutAlign="start center">
+          <div @scaleIn
+                class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+            <ic-icon [icon]="icTask" size="20px"></ic-icon>
+          </div>
+
+          <div @fadeInRight>
+            <p class="m-0 body-1">{{shift.role}}</p>
+            <p class="m-0 caption text-hint uppercase">Role</p>
+          </div>
+        </div>
+
+        <div class="py-3" fxLayout="row" fxLayoutAlign="start center">
+          <div @scaleIn
+                class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+            <ic-icon [icon]="icTime" size="20px"></ic-icon>
+          </div>
+
+          <div @fadeInRight>
+            <p class="m-0 body-1">{{shift.startTime}}</p>
+            <p class="m-0 caption text-hint uppercase">Start Time</p>
+          </div>
+        </div>
+
+        <div class="py-3" fxLayout="row" fxLayoutAlign="start center">
+          <div @scaleIn
+                class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+            <ic-icon [icon]="icAccessTime" size="20px"></ic-icon>
+          </div>
+
+          <div @fadeInRight>
+            <p class="m-0 body-1">{{shift.endTime}}</p>
+            <p class="m-0 caption text-hint uppercase">End Time</p>
+          </div>
+        </div>
+
+        <div class="py-3" fxLayout="row" fxLayoutAlign="start center">
+          <div @scaleIn
+                class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+            <ic-icon [icon]="icCount" size="20px"></ic-icon>
+          </div>
+
+          <div @fadeInRight>
+            <p class="m-0 body-1">{{shift.total}}</p>
+            <p class="m-0 caption text-hint uppercase">Staff Required</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="px-gutter py-4" gdColumns="1fr 1fr" gdColumns.xs="1fr" gdGap="16px">
+      <div class="py-3" fxLayout="row" fxLayoutAlign="start center">
+        <div @scaleIn
+              class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+          <ic-icon [icon]="icLocation" size="20px"></ic-icon>
+        </div>
+
+        <div @fadeInRight>
+          <p class="m-0 body-1" >{{viewjobData.locationShift}}</p>
+          <p class="m-0 caption text-hint uppercase">Job Location</p>
+        </div>
+      </div>
+
+      <div class="py-3" fxLayout="row" fxLayoutAlign="start center">
+        <div @scaleIn
+              class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+          <ic-icon [icon]="icInfo" size="20px"></ic-icon>
+        </div>
+
+        <div @fadeInRight>
+          <p class="m-0 body-1">{{viewjobData.statusStr}}</p>
+          <p class="m-0 caption text-hint uppercase">Job Status</p>
+        </div>
+      </div>
+
+      <div class="py-3" fxLayout="row" fxLayoutAlign="start center">
+        <div @scaleIn
+              class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+          <ic-icon [icon]="icDate" size="20px"></ic-icon>
+        </div>
+
+        <div @fadeInRight>
+          <p class="m-0 body-1">{{viewjobData.shiftDate | date:'dd MMMM yyyy'}}</p>
+          <p class="m-0 caption text-hint uppercase">SHIFT DATE</p>
+        </div>
+      </div>
+
+      <div class="py-3" fxLayout="row" fxLayoutAlign="start center" *ngIf="viewjobData.purchaseOrderNo">
+        <div @scaleIn
+            class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+          <ic-icon [icon]="icOrder" size="20px"></ic-icon>
+        </div>
+
+        <div @fadeInRight>
+          <p class="m-0 body-1">{{viewjobData.purchaseOrderNo}}</p>
+          <p class="m-0 caption text-hint uppercase">Purchase Order No</p>
+        </div>
+      </div>
+
+      <div class="py-3" fxLayout="row" fxLayoutAlign="start center" *ngIf="viewjobData.additionalInformation">
+        <div @scaleIn
+            class="w-10 h-10 rounded-full bg-primary-light text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+          <ic-icon [icon]="icComment" size="20px"></ic-icon>
+        </div>
+
+        <div @fadeInRight>
+          <p class="m-0 body-1">{{viewjobData.additionalInformation}}</p>
+          <p class="m-0 caption text-hint uppercase">Comments</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close type="button">CANCEL</button>
+</mat-dialog-actions>
+

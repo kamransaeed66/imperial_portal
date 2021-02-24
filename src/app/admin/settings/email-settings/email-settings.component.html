@@ -1,0 +1,60 @@
+<vex-secondary-toolbar current="Email Settings">
+  <!-- <vex-breadcrumbs [crumbs]="['Settings', 'Company details']" fxFlex="auto"></vex-breadcrumbs> -->
+
+  <!-- <button class="ml-2" color="primary" mat-icon-button type="button">
+    <mat-icon [icIcon]="icMoreVert"></mat-icon>
+  </button> -->
+</vex-secondary-toolbar>
+
+
+<div [@stagger]="true" class="p-gutter" vexContainer>
+
+  <div [formGroup]="form" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+    <div @fadeInUp class="card" fxFlex="auto">
+      <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
+        <h2 class="title m-0">SMTP Credentials</h2>
+      </div>
+
+      <div class="px-6 py-4" fxLayout="column">
+        <mat-form-field>
+          <mat-label>‘FROM’ Email Address</mat-label>
+          <input formControlName="fromEmailAddress" matInput required>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>SMTP Host</mat-label>
+          <input formControlName="SMTPHost" matInput required>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>SMTP User</mat-label>
+          <input formControlName="SMTPUser" matInput required>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>SMTP Password</mat-label>
+          <input formControlName="SMTPPassword" type="password" matInput required>
+        </mat-form-field>
+
+        <mat-form-field>
+        <mat-label>SMTP Port</mat-label>
+          <input  formControlName="SMTPPort" matInput required>
+        </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Encryption</mat-label>
+          <!-- <mat-select formControlName="accountType" (selectionChange)="changeAccountType($event)" [(ngModel)]="selectedType"> -->
+            <mat-select formControlName="Encryption" (selectionChange)="changeAccountType($event)" [(ngModel)]="selectedType">
+            <mat-option value="SSL">SSL</mat-option>
+            <mat-option value="TLS">TLS</mat-option>
+            <mat-option value="None">None</mat-option>
+        </mat-select>
+      </mat-form-field>
+        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+          <button mat-button type="button">CANCEL</button>
+          <button color="primary" mat-raised-button [disabled]="!form.valid" type="button" (click)="onSubmit()">SUBMIT</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

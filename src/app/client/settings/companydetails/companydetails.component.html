@@ -1,0 +1,130 @@
+<vex-secondary-toolbar current="Company details">
+  <!-- <vex-breadcrumbs [crumbs]="['Settings', 'Company details']" fxFlex="auto"></vex-breadcrumbs> -->
+
+  <!-- <button class="ml-2" color="primary" mat-icon-button type="button">
+    <mat-icon [icIcon]="icMoreVert"></mat-icon>
+  </button> -->
+</vex-secondary-toolbar>
+
+
+<div [@stagger]="true" class="p-gutter" vexContainer>
+
+  <div [formGroup]="formCompany" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+    <div @fadeInUp class="card" fxFlex="auto">
+      <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
+        <h2 class="title m-0">Company Details</h2>
+      </div>
+
+      <div class="px-6 py-4" fxLayout="column">
+        <div class="columns">
+          <div class="row is-one-third" *ngIf="currentUser.parentId == ''">
+              <div class="field">
+                  <div class="file has-name is-primary is-fullwidth">
+                      <label class="file-label">
+                  <input
+                    class="file-input"
+                    type="file"
+                    name="file"
+                    #fileInput
+                    (change)="onChange(fileInput.files[0])"
+                    style="opacity: 0;width:0px"
+                  />
+                  <span class="file-cta mat-raised-button">
+                    <span class="file-icon">
+                      <!-- <fa-icon [icon]="['fas', 'upload']"></fa-icon> -->
+                    </span>
+                    <span class="file-label mat-raised-button">
+                      Choose a file…
+                    </span>
+                  </span>
+                  <span class="file-name">
+                    {{ fileName }}
+                  </span>
+                  <button mat-button style="    margin-left: 128px;background: #5c77ff;color: white;" color="primary" (click)="onUpload()" [attr.disabled]="isUploading ? '' : null">
+                      Upload
+                    </button>
+                </label>
+                  </div>
+              </div>
+
+              <article class="message" *ngIf="infoMessage">
+                  <div class="message-body">
+                      {{ infoMessage }}
+                  </div>
+              </article>
+
+              <div class="field" *ngIf="!infoMessage">
+                  <div class="control">
+                      <progress class="progress is-primary" style="visibility: hidden;" [attr.value]="progress" max="100"></progress>
+                  </div>
+              </div>
+
+              <!-- <div class="field">
+                  <div class="control" style="text-align: center;">
+                      <button mat-button style="    margin-left: 128px;background: #5c77ff;color: white;" color="primary" (click)="onUpload()" [attr.disabled]="isUploading ? '' : null">
+                  Upload
+                </button>
+                  </div>
+              </div> -->
+          </div>
+          <div class="column">
+              <figure class="image is-128x128" style="padding-bottom: 1.34375em;">
+                  <img [src]="imageUrl" style="padding: auto;margin:auto; max-width: 200px;" />
+              </figure>
+          </div>
+      </div>
+        <mat-form-field>
+          <mat-label>Comopany Name</mat-label>
+          <input formControlName="companyName" matInput>
+        <mat-error *ngIf="isControlHasError('companyName','required')">
+            <strong>You have to input Correctly</strong>
+        </mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex="grow">
+          <mat-label>Trading Name (Optional)</mat-label>
+          <input formControlName="tradingName" matInput>
+      </mat-form-field>
+      <mat-form-field fxFlex="grow">
+        <mat-label>Address</mat-label>
+        <input formControlName="companyAddress" matInput>
+        <mat-error *ngIf="isControlHasError('companyAddress','required')">
+            <strong>You have to input Correctly</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="grow">
+        <mat-label>Phone Number</mat-label>
+        <input formControlName="companyPhoneNumber" matInput>
+        <mat-error *ngIf="isControlHasError('companyPhoneNumber','required')">
+            <strong>You have to input Correctly</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="grow">
+        <mat-label>Email Address</mat-label>
+        <input formControlName="emailAddressAccountsTeam" matInput>
+        <mat-error *ngIf="isControlHasError('emailAddressAccountsTeam','required')">
+            <strong>You have to input Correctly</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="grow">
+        <mat-label>VAT Number (Optional)</mat-label>
+        <input formControlName="VATNumber" matInput>
+      </mat-form-field>
+      <mat-form-field fxFlex="grow">
+        <mat-label>Company Registration Number</mat-label>
+        <input formControlName="companyRegNumber" matInput>
+        <mat-error *ngIf="isControlHasError('companyRegNumber','required')">
+            <strong>You have to input Correctly</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="grow">
+        <mat-label>Web URL Address (Optional)</mat-label>
+        <input formControlName="companyUrl" matInput>
+      </mat-form-field>
+        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+          <button [disabled] = "currentUser.parentId != ''"mat-button type="button">CANCEL</button>
+          <button [disabled] = "currentUser.parentId != ''" color="primary" mat-raised-button type="button" (click)="update()">Update</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

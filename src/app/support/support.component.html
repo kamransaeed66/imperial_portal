@@ -1,0 +1,89 @@
+<vex-secondary-toolbar current="Support">
+  <!-- <vex-breadcrumbs [crumbs]="['Support']" fxFlex="auto"></vex-breadcrumbs> -->
+
+  <!-- <button class="ml-2" color="primary" mat-icon-button type="button">
+    <mat-icon [icIcon]="icMoreVert"></mat-icon>
+  </button> -->
+</vex-secondary-toolbar>
+
+
+<div [@stagger]="true" class="p-gutter" vexContainer>
+
+  <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+    <div @fadeInUp class="card" fxFlex="auto">
+      <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
+        <h2 class="title m-0">Contact Form</h2>
+      </div>
+
+      <div class="px-6 py-4" [formGroup]="form" fxLayout="column">
+        <!-- <mat-form-field>
+          <mat-label>Name of Contact</mat-label>
+             <input formControlName="nameContact" matInput readonly>
+          </mat-form-field>
+
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+          <mat-form-field>
+            <mat-label>Company Name</mat-label>
+               <input formControlName="nameContact" matInput readonly>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Company Name</mat-label>
+                 <input formControlName="nameContact" matInput readonly>
+              </mat-form-field>
+        </div> -->
+        <mat-form-field>
+          <mat-label>Phone Number (Optional)</mat-label>
+          <input formControlName="phoneNumber" matInput >
+          </mat-form-field>
+        <mat-form-field>
+          <mat-label>Enquiry Type</mat-label>
+          <mat-select formControlName="enquiryType" [(ngModel)]="selectedType">
+              <mat-option value="General">General</mat-option>
+              <mat-option value="Payments">Payments</mat-option>
+              <mat-option value="Technical">Technical</mat-option>
+              <mat-option value="Other">Other</mat-option>
+          </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+          <mat-label>Message
+          </mat-label>
+          <textarea matInput rows="5" formControlName="message" cols="40" value=""></textarea>
+      </mat-form-field>
+        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+          <button mat-button type="button">CANCEL</button>
+          <button color="primary" mat-raised-button type="button" (click)="submit()" >SUBMIT</button>
+        </div>
+      </div>
+    </div>
+
+    <div @fadeInUp class="card overflow-hidden" fxFlex="auto">
+      <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
+        <h2 class="title m-0">Support Team</h2>
+      </div>
+
+      <div class="px-6 py-4" fxLayout="column">
+        <h2 class="display-1 mt-0 mb-4 text-center">Still have questions?</h2>
+        <h3 class="subheading-2 text-hint text-center max-w-lg mx-auto m-0">A wonderful serenity has taken possession of my
+          entire
+          soul, like these sweet
+          mornings of spring which I enjoy with my whole heart.</h3>
+        <div class="mt-16 max-w-3xl mx-auto" fxLayout="row" fxLayout.xs="column" fxLayoutGap="24px">
+          <a class="text-center p-6 border rounded"
+            fxFlex
+            routerLinkActive>
+            <ic-icon [icon]="icPhoneInTalk" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">020 7436 7424</h3>
+          </a>
+
+          <a class="text-center p-6 border rounded"
+            fxFlex
+            routerLinkActive>
+            <ic-icon [icon]="icMail" class="text-hint" size="42px"></ic-icon>
+            <h3 class="title mb-0 mt-4">support@imperialrecruitment.com</h3>
+            <!-- <h4 class="subheading-2 m-0 text-hint">Send us a mail to resolve your issue</h4> -->
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>

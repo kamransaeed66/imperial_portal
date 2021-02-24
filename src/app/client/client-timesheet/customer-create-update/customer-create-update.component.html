@@ -1,0 +1,60 @@
+<form (ngSubmit)="save()" [formGroup]="form">
+  <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+    <!-- <img *ngIf="form.get('imageSrc').value" [src]="form.get('imageSrc').value" class="avatar mr-5"> -->
+
+    <!-- <h2 *ngIf="form.get('firstName').value || form.get('lastName').value"
+        class="headline m-0"
+        fxFlex="auto">{{ form.get('firstName').value + ' ' + form.get('lastName').value }}</h2> -->
+    <!-- <h2 *ngIf="!form.get('firstName').value && !form.get('lastName').value" -->
+    <h2 
+        class="headline m-0"
+        fxFlex="auto">Time Sheets</h2>
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+      <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+  </div>
+
+  <mat-divider class="-mx-6 text-border"></mat-divider>
+
+  <mat-dialog-content fxLayout="column">
+    <div class="flex flex-col sm:flex-row"*ngFor="let item of timesheets;let i = index;" >
+      <mat-form-field appearance="standard"class="flex-auto">
+        <mat-label>Time</mat-label>
+        <input  [value]="defaults.startTime + 'h ~ '+ defaults.endTime +'h '" matInput readonly>
+      </mat-form-field>
+      <mat-form-field appearance="standard" class="sm:ml-3 flex-auto">
+        <mat-label>Department</mat-label>
+        <input  [value]="defaults.department"matInput readonly>
+      </mat-form-field>
+      <!-- <mat-form-field appearance="standard"class="sm:ml-3 flex-auto">
+        <mat-label>Role</mat-label>
+        <input  [value]="defaults.role" matInput readonly>
+      </mat-form-field> -->
+      <div class="sm:ml-3 flex-auto"style="margin-top:21px; margin-right: 20px;" >
+        <img [src]="item.profilePhoto" class="avatar h-6 w-6 align-middle inline-block ltr:mr-2 rtl:ml-2">
+        <span>{{ item.workerIdName }}</span>
+      </div>
+      <div class="sm:ml-3 flex-auto" style="margin:auto;cursor: pointer;" (click)="changeStatus(item, i)">
+            <!-- <div [ngClass]="[getStatusClass(timesheets[i].statusStr, 0), getStatusClass(timesheets[i].statusStr, 1)]" -->
+            <div *ngIf="timesheets[i].statusStr == 'Completed'" class="text-purple bg-purple-light rounded px-2 py-1 font-medium text-xs"
+            fxFlex="none">
+               Completed
+            </div>
+            <div *ngIf="timesheets[i].statusStr == 'Pending'" class= "text-green bg-green-light rounded px-2 py-1 font-medium text-xs"
+            fxFlex="none">
+               Pending
+            </div>
+            <div  *ngIf="timesheets[i].statusStr == 'UnCompleted'" class="bg-cyan-light text-cyan rounded px-2 py-1 font-medium text-xs"
+            fxFlex="none">
+               UnCompleted
+            </div>
+    </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">CANCEL</button>
+    <!-- <button *ngIf="isUpdateMode()" color="primary" mat-button type="submit">UPDATE CUSTOMER</button> -->
+    <button color="primary" (click)="setSubmit()"mat-button type="button">Confirm</button>
+  </mat-dialog-actions>
+</form>

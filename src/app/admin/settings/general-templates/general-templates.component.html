@@ -1,0 +1,107 @@
+<vex-secondary-toolbar current="General Templates">
+</vex-secondary-toolbar>
+
+<div [formGroup]="form" [@stagger]="true" class="p-gutter" vexContainer>
+
+  <div  fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+    <div @fadeInUp class="card" fxFlex="auto">
+      <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
+        <h2 class="title m-0">Worker</h2>
+      </div>
+
+      <div class="px-6 py-4" fxLayout="column">
+        <mat-form-field>
+          <mat-label>Email Verification</mat-label>
+          <input  formControlName="workerEmailVerification" matInput required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Welcome Email</mat-label>
+          <input  formControlName="workerWelcomeEmail" matInput required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Reset Password</mat-label>
+          <input  formControlName="workerResetPassword" matInput required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Change of Email Verification</mat-label>
+          <input  formControlName="workerChangeEmailVerificaion" matInput required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Payslip Email</mat-label>
+          <input  formControlName="workerPayslipEmail" matInput required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Shift Details</mat-label>
+          <input  formControlName="workerShiftDetails" matInput required>
+        </mat-form-field>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+          <mat-form-field fxFlex="auto">
+            <mat-label>Shift Amended</mat-label>
+            <input  formControlName="workerShiftAmended" matInput required>
+          </mat-form-field>
+          <mat-form-field fxFlex="auto">
+            <mat-label>Shift Cancelled</mat-label>
+            <input  formControlName="workerShiftCancelled" matInput required>
+          </mat-form-field>
+      </div>
+      </div>
+    </div>
+  </div>
+  <div  fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+    <div @fadeInUp class="card" fxFlex="auto">
+      <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
+        <h2 class="title m-0">Client</h2>
+      </div>
+
+      <div class="px-6 py-4" fxLayout="column">
+        <mat-form-field>
+          <mat-label>Welcome Email</mat-label>
+          <input formControlName="clientWelcomeEmail" matInput required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Sub Account Invitation Email</mat-label>
+          <input formControlName="clientSubAccountInvitationEmail" matInput required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>New Invoice #INV-350001 from Imperial Recruitment</mat-label>
+          <input  formControlName="clientNewInvoice" matInput required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>New Timesheet #TS-51001 to Review</mat-label>
+          <input formControlName="clientNewTimesheet" matInput required >
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+    <div @fadeInUp class="card" fxFlex="auto">
+      <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
+        <h2 class="title m-0">Admin</h2>
+      </div>
+
+      <div class="px-6 py-4" fxLayout="column">
+        <mat-form-field>
+          <mat-label>Payslips Sent</mat-label>
+          <input  formControlName="adminPayslipsSent" matInput required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>New Job Applicant</mat-label>
+          <input  formControlName="adminNewJobApplicant" matInput required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>New Client Registered</mat-label>
+          <input  formControlName="adminNewClientRegistered" matInput required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Possible AWR Notification</mat-label>
+          <input  formControlName="adminPossibleAWRNotification" matInput required>
+        </mat-form-field>
+
+        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+          <button mat-button type="button">CANCEL</button>
+          <button color="primary" mat-raised-button type="button" (click)="onSubmit()">SUBMIT</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

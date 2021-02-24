@@ -1,0 +1,60 @@
+<vex-secondary-toolbar current="Dashboard">
+  <!-- <vex-breadcrumbs [crumbs]="['Dashboards', 'Analytics']" class="flex-auto"></vex-breadcrumbs> -->
+  <!-- <button class="ml-2" color="primary" mat-icon-button type="button">
+    <mat-icon [icIcon]="icMoreVert"></mat-icon>
+  </button> -->
+</vex-secondary-toolbar>
+
+<div class="p-gutter"
+  gdColumns="1fr 1fr 1fr "
+  gdColumns.lt-md="1fr 1fr"
+  gdColumns.lt-sm="1fr"
+  gdGap="16px"
+  vexContainer>
+  <vex-widget-quick-value-center [change]="124.4"
+    [icon]="icAssigment"
+    iconClass="text-purple bg-purple-light"
+    gdColumn.lt-sm="1"
+    label="Active Jobs"
+    [value]="AllJob ? AllJob.length : ''">
+  </vex-widget-quick-value-center>
+
+  <vex-widget-quick-value-center [change]="23.2"
+    [icon]="icBook"
+    iconClass="text-teal  bg-teal-light"
+    gdColumn.lt-sm="1"
+    label="Total Staff"
+    [value]="totalStaff">
+  </vex-widget-quick-value-center>
+  <vex-widget-quick-value-center [change]="23.2"
+    [icon]="icGroup"
+    iconClass="text-teal  bg-teal-light"
+    gdColumn.lt-sm="1"
+    label="Pending Client Applications"
+    [value]="pendingClient">
+  </vex-widget-quick-value-center>
+  <vex-widget-quick-value-center [change]="34.5"
+    [icon]="icStar"
+    iconClass="text-deep-orange bg-deep-orange-light"
+    gdColumn.lt-sm="1"
+    label="Total Clients"
+    [value]="totalClient">
+  </vex-widget-quick-value-center>
+  <vex-widget-quick-value-center [change]="124.4" [icon]="icReceipt"
+    iconClass="text-primary bg-primary-light"
+    gdColumn.lt-sm="1"
+    label="Review Timesheets"
+    [value]="reviewTimesheets">
+  </vex-widget-quick-value-center>
+  <vex-widget-quick-value-center [change]="23.2"
+    [icon]="icGroup"
+    iconClass="text-teal  bg-teal-light"
+    gdColumn.lt-sm="1"
+    label="Pending Worker Applications"
+    [value]="pendingWorker">
+  </vex-widget-quick-value-center>
+  <div gdColumn="1 / -1"  gdColumn.lt-sm="1" style="padding-top: 15px;">
+    <vex-admin-job-table></vex-admin-job-table>
+  </div>
+
+</div>

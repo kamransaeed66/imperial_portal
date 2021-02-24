@@ -1,0 +1,127 @@
+<div class="w-full h-full bg-pattern" fxLayout="column" fxLayoutAlign="center center">
+    <div @fadeInUp class="card overflow-hidden w-full max-w-xs">
+        <div class="p-6 pb-0" fxLayout="column" fxLayoutAlign="center center">
+            <div class="fill-current text-center">
+                <img class="w-16" src="assets/img/demo/logo_new.jpg">
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <h2 class="title m-0">Register for an account</h2>
+            <h4 class="body-2 text-secondary m-0" *ngIf="step == 0">COMPANY DETAILS</h4>
+            <h4 class="body-2 text-secondary m-0" *ngIf="step == 14">KEY POINT OF CONTACT</h4>
+            <h4 class="body-2 text-secondary m-0" *ngIf="step == 2">PRIVATE & CONFIDENTIAL(3)</h4>
+            <h4 class="body-2 text-secondary m-0" *ngIf="step == 3">PRIVATE & CONFIDENTIAL(4)</h4>
+            <h4 class="body-2 text-secondary m-0" *ngIf="step == 4">PRIVATE & CONFIDENTIAL(5)</h4>
+            <h4 class="body-2 text-secondary m-0" *ngIf="step == 5">EDUCATION HISTORY</h4>
+            <h4 class="body-2 text-secondary m-0" *ngIf="step == 6">EMPLOYMENT HISTORY</h4>
+            <h4 class="body-2 text-secondary m-0" *ngIf="step == 7">OTHER EMPLOYMENT</h4>
+            <h4 class="body-2 text-secondary m-0" *ngIf="step == 8">REFERENCES</h4>
+            <h4 class="body-2 text-secondary m-0" *ngIf="step == 9">CRIMINAL RECORDS</h4>
+            <h4 class="body-2 text-secondary m-0" *ngIf="step == 10">PROFILE PHOTO</h4>
+            <h4 class="body-2 text-secondary m-0" *ngIf="step == 11">HEALTH DETAILS</h4>
+            <h4 class="body-2 text-secondary m-0" *ngIf="step == 12">WEB PORTAL REGISTRATION</h4>
+            <!-- <h4 class="body-2 text-secondary m-0" *ngIf="step == 13">DECLARATION</h4> -->
+            <h4 class="body-2 text-secondary m-0" *ngIf="step == 14">AGREEMENT</h4>
+        </div>
+
+        <div [formGroup]="form" class="p-6" fxLayout="column" fxLayoutGap="16px" autocomplete="off">
+            <div fxFlex="auto" fxLayout="column">
+                <mat-form-field *ngIf="step == 0" fxFlex="grow">
+                    <mat-label>CLIENT NAME</mat-label>
+                    <input formControlName="companyName" matInput name="companyName">
+                    <mat-error *ngIf="isControlHasError('companyName','required')">
+                        <strong>You have to input Correctly</strong>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field *ngIf="step == 0" fxFlex="grow">
+                    <mat-label>Company Address </mat-label>
+                    <input formControlName="companyAddress" matInput required>
+                </mat-form-field>
+                <mat-form-field *ngIf="step == 0" fxFlex="grow">
+                    <mat-label>Company Phone Number</mat-label>
+                    <input formControlName="companyPhoneNumber" pattern="[0-9]*" minlength="10"maxlength="14"onkeypress="return event.charCode >= 48 && event.charCode <= 57" matInput required>
+                </mat-form-field>
+                <mat-form-field *ngIf="step == 0" fxFlex="grow">
+                    <mat-label>Email Address</mat-label>
+                    <input formControlName="emailAddressAccountsTeam" matInput required>
+                </mat-form-field>
+                <mat-form-field *ngIf="step == 0" fxFlex="grow">
+                    <mat-label>VAT Number (Optional)</mat-label>
+                    <input formControlName="VATNumber" matInput>
+                </mat-form-field>
+                <mat-form-field *ngIf="step == 0" fxFlex="grow">
+                    <mat-label>Company Registration No</mat-label>
+                    <input formControlName="companyRegNumber" matInput required>
+                </mat-form-field>
+                <div *ngIf="step == 14" fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                    <mat-form-field fxFlex="auto">
+                        <mat-label>First Name
+                        </mat-label>
+                        <input formControlName="firstName" matInput required>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="auto">
+                        <mat-label>Last Name</mat-label>
+                        <input formControlName="lastName" matInput required>
+                    </mat-form-field>
+                </div>
+                <mat-form-field *ngIf="step == 14" fxFlex="grow">
+                    <mat-label>Email</mat-label>
+                    <input type="email" formControlName="emailAddress" matInput autocomplete="off" />
+                    <mat-error *ngIf="isControlHasError('emailAddress','required')">
+                        <strong>You have to input Correctly</strong>
+                    </mat-error>
+                    <mat-error *ngIf="isControlHasError('emailAddress','email')">
+                        <strong>You have Input Email Correctly</strong>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field *ngIf="step == 14" fxFlex="grow">
+                    <mat-label>Phone Number</mat-label>
+                    <input formControlName="phoneNumber" pattern="[0-9]*" minlength="10"maxlength="14"onkeypress="return event.charCode >= 48 && event.charCode <= 57"  matInput required>
+                </mat-form-field>
+                <mat-form-field *ngIf="step == 14" fxFlex="grow">
+                    <mat-label>Position</mat-label>
+                    <input formControlName="position" matInput required>
+                </mat-form-field>
+                <mat-form-field *ngIf="step == 14" fxFlex="grow">
+                    <mat-label>Password</mat-label>
+                    <input [type]="inputType" formControlName="hash" matInput required>
+                            <button (click)="toggleVisibility()" mat-icon-button matSuffix matTooltip="Toggle Visibility" type="button">
+                    <mat-icon *ngIf="visible" [icIcon]="icVisibility"></mat-icon>
+                    <mat-icon *ngIf="!visible" [icIcon]="icVisibilityOff"></mat-icon>
+                </button>
+                    <mat-hint>Click the eye to toggle visibility</mat-hint>
+                </mat-form-field>
+                <mat-form-field *ngIf="step == 14" fxFlex="grow">
+                    <mat-label>Password (Confirm)</mat-label>
+                    <input [type]="inputType" formControlName="passwordConfirm" matInput required>
+                    <button (click)="toggleVisibility()" mat-icon-button matSuffix matTooltip="Toggle Visibility" type="button">
+                        <mat-icon *ngIf="visible" [icIcon]="icVisibility"></mat-icon>
+                        <mat-icon *ngIf="!visible" [icIcon]="icVisibilityOff"></mat-icon>
+                    </button>
+                    <mat-hint>Please repeat your password from above</mat-hint>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" *ngIf="step == 14">
+                <mat-checkbox class="caption" color="primary" (change)="checkAccept($event)" [checked]="acceptCheckVal">I accept the <a href="/">terms and conditions.</a></mat-checkbox>
+            </div>
+
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                <button [disabled]="step == 0" fxFlex="auto" (click)="ChangeStep(-1)" color="primary" mat-raised-button type="button">
+                Back Step
+              </button>
+                <button [disabled]="step == 14" fxFlex="auto" (click)="ChangeStep(1)" color="primary" mat-raised-button type="button">
+                 Next Step
+              </button>
+            </div>
+            <button (click)="send()" *ngIf="step == 14" color="primary" mat-raised-button type="button">
+              CREATE ACCOUNT
+            </button>
+            <p class="text-secondary text-center">
+                Already have an account?<br/>
+                <a [routerLink]="['/login']">Sign in here</a>
+            </p>
+        </div>
+    </div>
+</div>

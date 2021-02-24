@@ -1,0 +1,468 @@
+<vex-page-layout mode="card">
+
+  <vex-secondary-toolbar *ngIf="workerForm.get('forename').value || workerForm.get('surename').value"[current]="[workerForm.get('forename').value +' '+workerForm.get('surename').value]">
+    <!-- <vex-breadcrumbs [crumbs]="['Page Layouts', 'Simple', 'Tabbed']" fxFlex="auto"></vex-breadcrumbs> -->
+    <div fxFlex="auto">
+      <!-- <span style="color:darkgray">Registered: {{formatDate(workerForm.get('createdDate').value, }}</span> -->
+      <span style="color:darkgray" *ngIf="workerForm.get('createdDate').value">Registered: {{workerForm.get('createdDate').value| date:'dd MMM yyyy' }}</span>
+    </div>
+    <button class="ml-2"  *ngIf="workerForm.get('department').value"color="primary" type="button">
+      {{workerForm.get('department').value}}
+      <!-- <mat-icon [icIcon]="icMoreVert"></mat-icon> -->
+    </button>
+  </vex-secondary-toolbar>
+
+  <vex-page-layout-content class="vex-tabs p-0 card" vexContainer>
+    <form (ngSubmit)="save()" [formGroup]="workerForm">
+      <mat-tab-group>
+        <mat-tab label="Private & Confidential">
+          <div class="p-6">
+            <div class="px-6 py-4 border-b" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+              <div   fxFlex="200px">
+                  <img *ngIf="workerForm.get('profilePhoto').value"[src]="workerForm.get('profilePhoto').value" style="width:200px;height:200px">
+                  <img *ngIf="!workerForm.get('profilePhoto').value" src="assets/img/0.jpg" style="width:200px;height:200px">
+              </div>
+              <div   fxFlex>
+                <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                  <mat-form-field fxFlex="33%">
+                    <mat-label>Department</mat-label>
+                    <mat-select formControlName="department" (selectionChange)="changeDepartment($event)" [(ngModel)]="selectedDepartment">
+                        <mat-option value="Housekeeping">Housekeeping</mat-option>
+                        <mat-option value="Food and Beverage">Food and Beverage</mat-option>
+                        <mat-option value="Back of House">Back of House</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field fxFlex="33%">
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="clientStatus" (selectionChange)="changeStatus($event)" [(ngModel)]="selectedStatus">
+                        <mat-option value="Active">Active</mat-option>
+                        <mat-option value="Pending">Pending</mat-option>
+                        <mat-option value="Suspended">Suspend</mat-option>
+                        <mat-option value="Dismissed">Dismissed</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                  <mat-form-field fxFlex="20%">
+                    <mat-label>Title</mat-label>
+                    <input formControlName="title" matInput >
+                 </mat-form-field>
+                <mat-form-field fxFlex="auto">
+                    <mat-label>First Name</mat-label>
+                    <input formControlName="forename" matInput>
+                  </mat-form-field>
+                  <mat-form-field fxFlex="auto">
+                    <mat-label>Last Name</mat-label>
+                    <input formControlName="surename" matInput required>
+                  </mat-form-field>
+                </div>
+                <div fxLayout="row"  fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                  <mat-form-field fxFlex="grow">
+                    <mat-label>Password</mat-label>
+                    <input [type]="inputType" formControlName="hash" matInput >
+                    <button (click)="toggleVisibility()" mat-icon-button matSuffix matTooltip="Toggle Visibility" type="button">
+                    <mat-icon *ngIf="visible" [icIcon]="icVisibility"></mat-icon>
+                    <mat-icon *ngIf="!visible" [icIcon]="icVisibilityOff"></mat-icon>
+                    </button>
+                          <mat-hint>Click the eye to toggle visibility</mat-hint>
+                  </mat-form-field>
+                  <mat-form-field fxFlex="grow">
+                        <mat-label>Password (Confirm)</mat-label>
+                        <input [type]="inputType" formControlName="passwordConfirm" matInput >
+                        <button (click)="toggleVisibility()" mat-icon-button matSuffix matTooltip="Toggle Visibility" type="button">
+                        <mat-icon *ngIf="visible" [icIcon]="icVisibility"></mat-icon>
+                        <mat-icon *ngIf="!visible" [icIcon]="icVisibilityOff"></mat-icon>
+                        </button>
+                        <mat-hint>Please repeat your password from above</mat-hint>
+                    </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="px-6 py-4 border-b" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+              <div   fxFlex="auto">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                  <h2 class="py-2 title m-0">Personal Details</h2>
+                </div>
+                <div fxLayout="column">
+                  <div fxLayout="row"  fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                    <mat-form-field fxFlex="auto">
+                      <mat-label>Select your date of birth</mat-label>
+                      <input formControlName="dateBirth" value="{{ birthDateVal | date:'yyyy-MM-dd' }}" (click)="formDatepickerRef.open()" (focus)="formDatepickerRef.open()" [matDatepicker]="formDatepickerRef" matInput>
+                      <mat-datepicker-toggle [for]="formDatepickerRef" matSuffix></mat-datepicker-toggle>
+                      <mat-hint>Click on the input or the datepicker icon</mat-hint>
+                      <mat-datepicker #formDatepickerRef></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="auto">
+                      <mat-label>Mobile Number</mat-label>
+                      <input formControlName="mobileNumber"  pattern="[0-9]*" minlength="10"maxlength="14"onkeypress="return event.charCode >= 48 && event.charCode <= 57" matInput >
+                    </mat-form-field>
+                    <mat-form-field fxFlex="auto">
+                        <mat-label>Home Number</mat-label>
+                        <input formControlName="homeNumber" pattern="[0-9]*" minlength="10"maxlength="14"onkeypress="return event.charCode >= 48 && event.charCode <= 57"  matInput >
+                    </mat-form-field>
+                  </div>
+                  <div fxLayout="row"  fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                    <mat-form-field fxFlex="auto">
+                      <mat-label>Address Line 1</mat-label>
+                      <input formControlName="addressLine1" matInput >
+                  </mat-form-field>
+                  <mat-form-field fxFlex="auto">
+                      <mat-label>Address Line 2</mat-label>
+                      <input formControlName="addressLine2" matInput >
+                  </mat-form-field>
+                  </div>
+                  <div fxLayout="row"  fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                    <mat-form-field fxFlex="auto">
+                      <mat-label>City</mat-label>
+                      <input formControlName="city" matInput >
+                    </mat-form-field>
+                    <mat-form-field fxFlex="auto">
+                        <mat-label>Postcode</mat-label>
+                        <input formControlName="postcode" matInput >
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="px-6 py-4 border-b" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+              <div   fxFlex="auto">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                  <h2 class="py-2 title m-0">Bank Account Information</h2>
+                </div>
+                <div fxLayout="column">
+                  <div fxLayout="row"  fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                    <mat-form-field fxFlex="auto">
+                      <mat-label>Bank Name</mat-label>
+                      <input formControlName="bankName" matInput >
+                     </mat-form-field>
+                  </div>
+                  <div fxLayout="row"  fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                        <mat-form-field fxFlex="auto">
+                        <mat-label>Account Name Holder</mat-label>
+                        <input type="text" formControlName="accountNameHolder" matInput >
+                    </mat-form-field>
+                  </div>
+                  <div fxLayout="row"  fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                    <mat-form-field fxFlex="auto">
+                      <mat-label>Account Number</mat-label>
+                      <input type="number"formControlName="bankAccountNumber" matInput >
+                    </mat-form-field>
+                    <mat-form-field fxFlex="auto">
+                        <mat-label>Sort Code</mat-label>
+                        <input formControlName="bankBranchSortCode" matInput pattern="[0-9]*"onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                    </mat-form-field>
+                  </div>
+                  <div fxLayout="row"  fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                    <mat-form-field fxFlex="auto">
+                      <mat-label>Building Society Reference (Optional) </mat-label>
+                      <input formControlName="buildingSocietyReference" matInput>
+                  </mat-form-field>
+                  </div>
+                </div>
+              </div>
+              <div   fxFlex="auto">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                  <h2 class="py-2 title m-0">National Insurance</h2>
+                </div>
+                <div fxLayout="column">
+                  <div fxLayout="row"  fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                    <mat-form-field fxFlex="auto">
+                      <mat-label>National Insurance Number (Optional)</mat-label>
+                      <input formControlName="nationalInsuranceNumber" matInput>
+                    </mat-form-field>
+                  </div>
+                  <div fxLayout="row"  fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                    <mat-form-field fxFlex="auto">
+                      <mat-label>Driving License Number (Optional)</mat-label>
+                      <input formControlName="currentDrivingLicense" matInput>
+                       <!-- <mat-checkbox formControlName="currentDrivingLicense" class="mat-form-field-wrapper" color="primary" (change)="checkCurrentDriving($event)" [checked]="currentDrivingVal">Driving License Number</mat-checkbox> -->
+                      </mat-form-field>
+                    <mat-form-field fxFlex="auto">
+                        <mat-label>Expiry Date (ex: MM/YYYY)</mat-label>
+                        <input formControlName="currentDrivingLicenseExpiryDate" matInput>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="px-6 py-4 border-b" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+              <div   fxFlex="auto">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                  <h2 class="py-2 title m-0">Next of Kin Information</h2>
+                </div>
+                <div fxLayout="column">
+                  <div fxLayout="row"  fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                    <div fxLayout="column" fxFlex="auto">
+                        <mat-form-field fxFlex="auto">
+                          <mat-label>Emergency Contact Name / Next of Kin</mat-label>
+                          <input formControlName="emergencyRelationship" matInput >
+                        </mat-form-field>
+                        <mat-form-field fxFlex="auto">
+                          <mat-label>Next of Kin Phone Number (mobile)
+                          </mat-label>
+                          <input formControlName="nextKinPhoneNumberMobile" matInput >
+                      </mat-form-field>
+                      <mat-form-field fxFlex="auto">
+                          <mat-label>Next of Kin Phone Number (home) (Optional)</mat-label>
+                          <input formControlName="nextKinPhoneNumberHome" matInput>
+                      </mat-form-field>
+                    </div>
+                    <mat-form-field fxFlex="auto">
+                      <mat-label>Next of Kin Address</mat-label>
+                      <textarea matInput rows="8" formControlName="nextKinAddress" cols="40" value=""></textarea>
+                      <!-- <input formControlName="nextKinAddress" matInput > -->
+                     </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+              <button mat-button (click)="cancelBtn()"type="button">CANCEL</button>
+              <button color="primary" mat-raised-button type="submit">SAVE CHANGES</button>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Statements">
+          <div class="p-6">
+            <div class="px-6 py-4 border-b" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+              <div   fxFlex="auto">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                  <h2 class="py-2 title m-0">Employee Statement</h2>
+                </div>
+                <div fxLayout="column" fxLayoutGap="16px">
+                  <mat-radio-group formControlName="employeeStatement" class="mat-form-field-wrapper" fxLayout="column" fxLayoutGap="16px">
+                      <mat-radio-button [checked]="true" value="This is my first job since 6 April and I’ve not been receiving taxable
+                      Jobseeker’s Allowance, Employment and Support Allowance, taxable
+                      Incapacity Benefit, State or Occupational Pension." color="primary"><span style="white-space: normal;">This is my first job since 6 April and I’ve not been receiving taxable Jobseeker’s Allowance, Employment and Support Allowance, taxable Incapacity Benefit, State or Occupational Pension.</span></mat-radio-button>
+                      <mat-radio-button value="This is now my only job but since 6 April I’ve had another job, or
+                      received taxable Jobseeker’s Allowance, Employment and Support
+                      Allowance or taxable Incapacity Benefit. I do not receive a State or
+                      Occupational Pension." color="primary"><span style="white-space: normal;">This is now my only job but since 6 April I’ve had another job, or received taxable Jobseeker’s Allowance, Employment and Support Allowance or taxable Incapacity Benefit. I do not receive a State or Occupational Pension.</span></mat-radio-button>
+                      <mat-radio-button value="As well as my new job, I have another job or receive State or
+                      Occupational Pension.
+                      " color="primary">As well as my new job, I have another job or receive State or Occupational Pension.
+                      </mat-radio-button>
+                  </mat-radio-group>
+                 </div>
+              </div>
+            </div>
+            <div class="px-6 py-4 border-b" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+              <div   fxFlex="auto">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                  <h2 class="py-2 title m-0">Student Loan</h2>
+                </div>
+                <div fxLayout="column" fxLayoutGap="8px">
+                  <mat-checkbox color="primary" formControlName="studentLoan" (change)="checkStudentLoan($event, 1)">Do you have one of the Student Loan Plans described which is not fully repaid?</mat-checkbox>
+                    <div class="p-3"fxLayout="column">
+                      <mat-radio-group formControlName="studentLoan" class="mat-form-field-wrapper" fxLayout="column" fxLayoutGap="16px" class="p-0">
+                          <mat-radio-button [checked]="true" value="Plan 1" color="primary">Plan 1</mat-radio-button>
+                          <mat-radio-button value="Plan 2" color="primary">Plan 2</mat-radio-button>
+                          <mat-radio-button value="Both" color="primary">Both</mat-radio-button>
+                      </mat-radio-group>
+                  </div>
+                  <mat-checkbox color="primary" formControlName="studentLoan2"(change)="checkStudentLoan($event, 2)" [checked]="studentloan2">Did you complete or leave your studies before 6th April?</mat-checkbox>
+                  <mat-checkbox color="primary" formControlName="studentLoan3"(change)="checkStudentLoan($event, 3)" [checked]="studentloan3">Are you repaying your Student Loan directly to the Student Loans Company by direct debit?</mat-checkbox>
+                </div>
+              </div>
+            </div>
+            <div class="px-6 py-4 border-b" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+              <div   fxFlex="auto">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                  <h2 class="py-2 title m-0">Postgraduate Loan</h2>
+                </div>
+                <div fxLayout="column" fxLayoutGap="8px">
+                  <mat-checkbox formControlName="postgraduateLoan" color="primary" (change)="checkPostgraduate($event, 1)" [checked]="Postgraduate1">Do you have a Postgraduate Loan which is not fully repaid?</mat-checkbox>
+                  <mat-checkbox  color="primary" (change)="checkPostgraduate($event, 2)" [checked]="Postgraduate2">Did you complete or leave your Postgraduate studies before 6th April?</mat-checkbox>
+                  <h5 class="mt-2 mb-2 text-secondary">
+                    Are you repaying your Postgraduate Loan direct to the Student Loans Company by direct debit?
+                  </h5>
+                  <div class="p-3" fxLayout="column" fxLayoutGap="16px">
+                      <mat-radio-group formControlName="postgraduateLoan" class="mat-form-field-wrapper" fxLayout="column" fxLayoutGap="16px"class="p-0">
+                          <mat-radio-button [checked]="true" value="True" color="primary">Yes</mat-radio-button>
+                          <mat-radio-button value="False" color="primary">No</mat-radio-button>
+                      </mat-radio-group>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="px-6 py-4 border-b" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+              <div   fxFlex="auto">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                  <h2 class="py-2 title m-0">Qualifications</h2>
+                </div>
+                <div fxLayout="column" fxLayoutGap="8px">
+                  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                    <mat-form-field fxFlex="auto">
+                      <mat-label>Qualification Name </mat-label>
+                      <input formControlName="qualificationName" matInput>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="auto">
+                        <mat-label>Qualification Year </mat-label>
+                        <input formControlName="qualificationYear" type="number" matInput >
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+              <button mat-button (click)="cancelBtn()"type="button">CANCEL</button>
+              <button color="primary" mat-raised-button type="submit">SAVE CHANGES</button>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Work & Reference">
+          <div class="p-6">
+            <div class="px-6 py-4 border-b" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+              <div   fxFlex="auto">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                  <h2 class="py-2 title m-0">Work Experiences</h2>
+                </div>
+                <div fxLayout="column">
+                  <div fxLayout="row"  fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                    <mat-form-field fxFlex="50%">
+                      <mat-label>Name of Employer (Optional)
+                      </mat-label>
+                      <input formControlName="employmentHistroyName" matInput >
+                  </mat-form-field>
+                    <mat-form-field fxFlex="auto">
+                      <mat-label>From
+                      </mat-label>
+                      <input type="number" formControlName="employmentHistroyFrom" matInput >
+                  </mat-form-field>
+                    <mat-form-field fxFlex="auto">
+                      <mat-label>To</mat-label>
+                      <input type="number" formControlName="employmentHistroyTo" matInput>
+                  </mat-form-field>
+                  </div>
+                  <div fxLayout="row"  fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                    <mat-form-field fxFlex="50%">
+                      <mat-label>Address of Employer (Optional)</mat-label>
+                        <textarea matInput rows="5" formControlName="employmentHistroyAddressEmployer" cols="40" value=""></textarea>
+                        <!-- <input formControlName="employmentHistroyAddressEmployer" matInput> -->
+                    </mat-form-field>
+                    <div fxLayout="column" fxFlex="auto">
+                      <mat-form-field fxFlex="auto">
+                        <mat-label>Job Title (Optional)
+                        </mat-label>
+                        <input formControlName="employmentHistroyJobTitle" matInput >
+                    </mat-form-field>
+                      <mat-form-field fxFlex="auto">
+                        <mat-label>Notice  to leave (optional)
+                        </mat-label>
+                        <input formControlName="employmentHistroyNoticeRequiredCurrentPosition" matInput >
+                    </mat-form-field>
+                    </div>
+                  </div>
+                  <div fxLayout="row"  fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                    <mat-form-field fxFlex="auto">
+                      <mat-label>Reason for leaving (Optional)
+                      </mat-label>
+                      <textarea matInput rows="2" formControlName="employmentHistroyReasonLeaving" cols="40" value=""></textarea>
+                      <!-- <input formControlName="employmentHistroyReasonLeaving" matInput > -->
+                  </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="px-6 py-4 border-b" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+              <div   fxFlex="auto">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                  <h2 class="py-2 title m-0">References</h2>
+                </div>
+                <div fxLayout="column">
+                  <div fxLayout="row"  fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                    <div fxLayout="column" fxFlex="auto">
+                      <mat-form-field fxFlex="auto">
+                        <mat-label>Company Name (Optional)
+                        </mat-label>
+                        <input formControlName="referenceCompanyName" matInput >
+                      </mat-form-field>
+                        <mat-form-field fxFlex="auto">
+                          <mat-label>Email Address (Optional)
+                          </mat-label>
+                          <input formControlName="referenceEmail" matInput >
+                      </mat-form-field>
+                      <mat-form-field fxFlex="auto">
+                        <mat-label>Contact Person (Optional)
+                        </mat-label>
+                        <input formControlName="referenceContactPerson" matInput >
+                    </mat-form-field>
+                    </div>
+                    <mat-form-field fxFlex="auto">
+                      <mat-label>Company Address</mat-label>
+                      <textarea matInput rows="8" formControlName="referenceAddress" cols="40" value=""></textarea>
+                      <!-- <input formControlName="nextKinAddress" matInput > -->
+                     </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+              <button mat-button type="button" (click)="cancelBtn()">CANCEL</button>
+              <button color="primary" mat-raised-button type="submit">SAVE CHANGES</button>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Records">
+          <div class="p-6">
+            <div class="px-6 py-4 border-b" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+              <div fxFlex="auto">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                  <h2 class="py-2 title m-0">Personal Worker Records</h2>
+                </div>
+                <div fxLayout="column">
+                  <div fxLayout="row"  fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                        <mat-form-field fxFlex="auto">
+                          <mat-label>Criminal Records
+                          </mat-label>
+                          <textarea matInput rows="3" formControlName="criminalRecords" cols="40" value=""></textarea>
+                      </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="px-6 py-4 border-b" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+              <div   fxFlex="auto">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                  <h2 class="py-2 title m-0">Health Details</h2>
+                </div>
+                <div fxLayout="column">
+                  <div fxLayout="row"  fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                    <div fxLayout="column" fxFlex="auto">
+                      <mat-form-field fxFlex="auto">
+                        <mat-label>Please specify any special arrangements for work associated with any impairment.
+                        </mat-label>
+                        <textarea matInput rows="2" formControlName="specialArrangementImpairment" cols="40" value=""></textarea>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="auto">
+                      <mat-label>Please list any diseases, disorders, allergies, muscular or musculoskeletal injuries from which you have suffered to do suffer
+                      </mat-label>
+                      <textarea matInput rows="2" formControlName="listAnyDiseases" cols="40" value=""></textarea>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="auto">
+                      <mat-label>Please detail any form of medicine, drugs or treatment you are currently and/or regularly receiving.
+                      </mat-label>
+                      <textarea matInput rows="2" formControlName="medicineDrugsTreatment" cols="40" value=""></textarea>
+                  </mat-form-field>
+                    <mat-form-field fxFlex="auto">
+                      <mat-label>Please list all absences from work in the past 12 months and the reasons for such absences.
+                      </mat-label>
+                      <textarea matInput rows="2" formControlName="allAbsencesWordPast12Month" cols="40" value=""></textarea>
+                  </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+              <button mat-button type="button" (click)="cancelBtn()">CANCEL</button>
+              <button color="primary" mat-raised-button type="submit">SAVE CHANGES</button>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </form>
+  </vex-page-layout-content>
+
+</vex-page-layout>
